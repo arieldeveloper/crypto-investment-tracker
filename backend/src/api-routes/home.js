@@ -22,4 +22,23 @@ router.get('/info/', (req, res) => {
     }
 );
 
+/**
+ * Provide the post request with a body (ex. {ticker: "BTC"}) and it will return the information on that
+ * ticker using the coinmarketcap api
+ */
+ router.post('/ticker2/', (req, res) => {
+    const tickerName = req.body.ticker;
+    const stringNeeded = "?CMC_PRO_API_KEY=" + 'dc223376-a632-41a9-8c70-b3ba8eb38f7f' + "&symbol=" + `${tickerName}`;
+    const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest';
+    const totalUrl = url + stringNeeded;
+
+    axios.get(totalUrl)
+        .then(response => {
+            res.send(response.data);
+        })
+        .catch(error => {
+            console.error(error)
+        });
+});
+
 module.exports = router;
