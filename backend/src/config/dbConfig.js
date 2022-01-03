@@ -1,5 +1,4 @@
-require("dotenv").config();
-
+require('dotenv').config();
 const { Pool } = require("pg");
 
 // Creates a pool object with all of the variables from the .env
@@ -10,7 +9,9 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
 })
-console.log("connected to database...")
+
+console.log("connected to database...");
+
 module.exports = { pool };
 
 

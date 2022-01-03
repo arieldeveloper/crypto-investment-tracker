@@ -4,8 +4,9 @@
  */
 export default async (searchString) => {
   //TODO: need to make an api call to the backend, where we will have the external api call
-  return ["empty"]
-  // return fetch("").then((response) => response.json()).then((data) => {
+  //
+  // let url = '/api/ticker/';
+  // return fetch(url).then((response) => response.json()).then((data) => {
   //   try {
   //     return [create_name(data)];
   //   } catch {
