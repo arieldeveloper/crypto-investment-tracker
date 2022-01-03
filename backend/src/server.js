@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express')
 const app = express();
 const port = process.env.PORT || 4000; // use 4000 if we are in dev mode
