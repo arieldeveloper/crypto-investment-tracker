@@ -1,7 +1,8 @@
-const express = require('express')
+const express = require('express');
+const axios = require('axios');
 const router = express.Router();
 const { pool } = require("../config/dbConfig");
-
+router.use(express.json());
 router.get('/', (req, res) => {
     res.send('Main page loaded!')
 });
@@ -21,5 +22,21 @@ router.get('/info/', (req, res) => {
         })
     }
 );
+
+router.post('/ticker/', (req, res) => {
+    let tickerName = req.body.ticker;
+    const apiKey = process.env.API_KEY;
+    const stringNeeded = "?CMC_PRO_API_KEY=" + apiKey + "&symbol=" + tickerName;
+    const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest';
+    const totalUrl = url + stringNeeded;
+
+    axios.get(totalUrl)
+        .then(response => {
+    res.send(response.data);
+    })
+        .catch(error => {
+            console.error(error)
+        });
+});
 
 module.exports = router;
