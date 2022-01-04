@@ -3,8 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const flash = require('express-flash');
-
+const connectRedis = require('connect-redis');
 const { pool } = require("../config/dbConfig");
+const RedisStore = connectRedis(session)
+const redisClient = require('../config/redisConfig');
 
 const passport = require("passport");
 const initializePassport = require("../config/passportConfig");
@@ -12,6 +14,7 @@ initializePassport(passport); // sets up the passport to be used in app
 
 // middle ware
 router.use(session({
+    store: new RedisStore({client:redisClient}),
     secret: 'secret',
     resave: false,
     saveUninitialized: false
