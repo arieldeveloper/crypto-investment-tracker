@@ -73,6 +73,13 @@ router.get('/', checkNotAuthenticated, (req, res) => {
     }
 });
 
+router.get('/info', checkNotAuthenticated, (req, res) => {
+    const sess = req.session;
+    if (sess.passport.user !== undefined) {
+        res.send(sess.email);
+        }
+    });
+
 /**
  * Post request to register a user.
  * Required:
