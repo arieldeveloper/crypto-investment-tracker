@@ -115,6 +115,7 @@ router.post('/register', async(req, res) => {
 
     if (errors.length > 0) {
         // Form not validated
+        console.log(errors)
         res.send(errors);
     } else {
         // Form validation passed
