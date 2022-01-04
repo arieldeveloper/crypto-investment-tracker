@@ -3,8 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const flash = require('express-flash');
-
+const connectRedis = require('connect-redis');
 const { pool } = require("../config/dbConfig");
+const RedisStore = connectRedis(session)
+const redisClient = require('../config/redisConfig');
 
 const passport = require("passport");
 const initializePassport = require("../config/passportConfig");
@@ -12,6 +14,7 @@ initializePassport(passport); // sets up the passport to be used in app
 
 // middle ware
 router.use(session({
+    store: new RedisStore({client:redisClient}),
     secret: 'secret',
     resave: false,
     saveUninitialized: false
@@ -58,15 +61,28 @@ router.get('/logout', (req, res) => {
     res.send("You are now logged out. Please log back in")
 });
 
+/**
+ * Logs the user out when making a get request to this route
+ */
 router.get('/', checkNotAuthenticated, (req, res) => {
-    if (req.user) {
-        res.send(`You are currently logged in as ${req.user.name}`)
+    const sess = req.session;
+    if (sess.passport.user !== undefined) {
+        res.send(`You are currently logged in with ${sess.email}`)
     } else {
         res.send("HOME PAGE OF USERS DASHBOARD (need to login)")
     }
 });
 
-// POST request for registration
+/**
+ * Post request to register a user.
+ * Required:
+ * {
+ *     "name":
+ *     "email":
+ *     "password":
+ *     "password2":
+ * }
+ */
 router.post('/register', async(req, res) => {
     let {name, email, password, password2} = req.body;
 
@@ -139,12 +155,20 @@ router.post('/register', async(req, res) => {
 });
 
 
-// Login post request
-router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/'
-    // failureFlash:true
-    })
+/**
+ * To login, required in the body:
+ * {
+ *   "email":
+ *   "password":
+ * }
+ */
+router.post('/login', passport.authenticate('local'), (req, res) => {
+        // this gets called if login successful
+        const sess  = req.session;
+        const { email } = req.body;
+        sess.email = email;
+        res.send("success");
+    }
 );
 
 module.exports = router;

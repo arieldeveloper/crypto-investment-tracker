@@ -1,16 +1,29 @@
 const express = require('express')
 const router = express.Router();
-
+const session = require('express-session');
 const { pool } = require("../config/dbConfig");
+const connectRedis = require('connect-redis');
+const RedisStore = connectRedis(session);
+const redisClient = require('../config/redisConfig');
+
 
 // middle ware
+router.use(session({
+    store: new RedisStore({client:redisClient}),
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false
+}));
+
 router.use(express.json());
 
 router.get('/', (req, res) => {
     res.send('Welcome to the portfolio');
 });
 
-// make a trade - will connect to the front end form for it
+/**
+ * Adds a trade to the database
+ */
 router.post('/trade', (req, res) => {
     let {email, coin, amount, price} = req.body;
 
@@ -42,7 +55,28 @@ router.post('/trade', (req, res) => {
             res.send(results.rows);
         })
     }
-
 });
+
+
+/**
+ * Get the trades for a given user
+ */
+router.get('/trades',(req, res) => {
+    const sess = req.session;
+    if (sess.passport.user !== undefined) {
+        pool.query(
+            `SELECT * FROM trades WHERE email='${sess.email}'`, (err, results) => {
+                if (err) {
+                    throw err;
+                }
+                if (results.rows.length > 0) {
+                    res.send(results.rows);
+                }
+            });
+    } else {
+        res.send("Error making this request.");
+    }
+  }
+);
 
 module.exports = router;
