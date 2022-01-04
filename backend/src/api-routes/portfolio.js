@@ -6,8 +6,8 @@ const connectRedis = require('connect-redis');
 const RedisStore = connectRedis(session);
 const redisClient = require('../config/redisConfig');
 
-
 // middle ware
+// Establishes connection to redis
 router.use(session({
     store: new RedisStore({client:redisClient}),
     secret: 'secret',
@@ -25,41 +25,48 @@ router.get('/', (req, res) => {
  * Adds a trade to the database
  */
 router.post('/trade', (req, res) => {
-    let {email, coin, amount, price} = req.body;
+    const sess  = req.session;
+    // Check if user is logged in
+    if (sess.passport.user !== undefined) {
+        let {coin, amount, price} = req.body;
 
-    let errors = [];
+        let errors = [];
 
-    // check for missing fields
-    if (!email || !email || !amount || !price) {
-        errors.push({message: "Please enter all of the fields"});
-    }
+        // check for missing fields
+        if (!coin || !amount || !price) {
+            errors.push({message: "Please enter all of the fields"});
+        }
 
-    // check for password length
-    if (amount <= 0 || price <= 0) {
-        errors.push({message: "The amount and price needs to be a positive number"});
-    }
+        // check for password length
+        if (amount <= 0 || price <= 0) {
+            errors.push({message: "The amount and price needs to be a positive number"});
+        }
 
-    if (errors.length > 0) {
-        // not validated
-        res.send(errors);
+        if (errors.length > 0) {
+            // not validated
+            res.send(errors);
+        } else {
+            // validated
+            const text = `INSERT INTO trades (email, coin, price, amount_of_coins) VALUES ($1, $2, $3, $4) RETURNING *`;
+            const values = [sess.email, coin, price, amount];
+
+            // Make a query to insert the values into the database
+            pool.query(text, values, (err, results) => {
+                if (err) {
+                    throw err;
+                }
+                console.log(results.rows);
+                res.send(results.rows);
+            });
+        }
     } else {
-        // validated
-        const text = `INSERT INTO trades (email, coin, price, amount_of_coins) VALUES ($1, $2, $3, $4) RETURNING *`;
-        const values = [email, coin, price, amount];
-
-        pool.query(text, values, (err, results) => {
-            if (err) {
-                throw err;
-            }
-            console.log(results.rows);
-            res.send(results.rows);
-        })
+        res.send("Please login");
     }
 });
 
 
 /**
- * Get the trades for a given user
+ * Get the trades for the user who is currently logged in.
  */
 router.get('/trades',(req, res) => {
     const sess = req.session;
@@ -74,7 +81,8 @@ router.get('/trades',(req, res) => {
                 }
             });
     } else {
-        res.send("Error making this request.");
+        // redirect to the login
+        res.redirect("/api/users/login");
     }
   }
 );
