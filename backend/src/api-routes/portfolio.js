@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router();
-
 const { pool } = require("../config/dbConfig");
 
 // middle ware
@@ -44,5 +43,20 @@ router.post('/trade', (req, res) => {
     }
 
 });
+
+
+router.get('/trades', (req, res) => {
+        pool.query(
+            `SELECT * FROM trades`, (err, results) => {
+                if (err) {
+                    throw err;
+                }
+                if (results.rows.length > 0) {
+                    res.send(results.rows);
+                }
+            })
+    }
+);
+
 
 module.exports = router;
