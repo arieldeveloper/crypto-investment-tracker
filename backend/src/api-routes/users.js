@@ -66,7 +66,7 @@ router.get('/logout', (req, res) => {
  */
 router.get('/', checkNotAuthenticated, (req, res) => {
     const sess = req.session;
-    if (sess.email) {
+    if (sess.passport.user !== undefined) {
         res.send(`You are currently logged in with ${sess.email}`)
     } else {
         res.send("HOME PAGE OF USERS DASHBOARD (need to login)")
@@ -74,7 +74,7 @@ router.get('/', checkNotAuthenticated, (req, res) => {
 });
 
 /**
- * Post request to register a user. Registers user
+ * Post request to register a user.
  * Required:
  * {
  *     "name":

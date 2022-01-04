@@ -55,22 +55,28 @@ router.post('/trade', (req, res) => {
             res.send(results.rows);
         })
     }
-
 });
 
-router.get('/trades', (req, res) => {
+
+/**
+ * Get the trades for a given user
+ */
+router.get('/trades',(req, res) => {
     const sess = req.session;
-    console.log(sess);
-    pool.query(
-            `SELECT * FROM trades`, (err, results) => {
+    if (sess.passport.user !== undefined) {
+        pool.query(
+            `SELECT * FROM trades WHERE email='${sess.email}'`, (err, results) => {
                 if (err) {
                     throw err;
                 }
                 if (results.rows.length > 0) {
                     res.send(results.rows);
                 }
-            })
+            });
+    } else {
+        res.send("Error making this request.");
     }
+  }
 );
 
 module.exports = router;
