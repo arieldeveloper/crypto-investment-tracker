@@ -1,30 +1,24 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import LoginPost from '../api/LoginPost.js';
 
 export default function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  function validateForm() {
-      const requestOptions = {
-          email: username,
-          password: password
-      };
 
-      fetch('/users/login', requestOptions)
-          .then(response => response.json())
-          .then(data => this.setState({ postId: data.id }));
-
-    return username.length > 0 && password.length > 0;
-  }
-
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    if (validateForm()) {
+    let res = await LoginPost(username, password);
+      console.log(res);
+      if (res === 'success') {
         props.login(username);
-    }
+      }
+      props.logout();
   }
-
+  if (props.loggedIn) {
+    return <Navigate to="/home" choose={props.choose}/>
+  }
   return (
     <div className="Login">
       <form onSubmit={handleSubmit}>
@@ -41,28 +35,18 @@ export default function Login(props) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           />
-          {(() => { if (props.user != null && props.user.name == username) {
-          return ( 
           <button type="submit" >
-            <Link
-          to="/home"
-        >
           Login
-        </Link>
-          </button>)
-        }
-        })()}
+          </button>
         <br/>
         No Account? 
-        <button type="submit" >
+        <button type="button" >
             <Link
           to="/register"
         >
           Register
         </Link>
           </button>
-
-        
       </form>
     </div>
   );

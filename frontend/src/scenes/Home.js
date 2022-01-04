@@ -5,25 +5,29 @@ import Coin from "../entities/Coin.ts"
 import NewTrade from "../components/NewTrade"
 import { Link } from "react-router-dom";
 import TickerSearch from '../api/TickerSearch.js';
+import UserSearch from '../api/UserSearch.js';
 
 class Home extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {text: '', inTrade: false, search: [] };
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleWish = this.handleWish.bind(this);
+    this.handleBuy = this.handleBuy.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.selectTrade = this.selectTrade.bind(this);
     this.endTrade = this.endTrade.bind(this);
     this.leaveScreen = this.leaveScreen.bind(this);
+    this.userData = this.userData.bind(this)
+    this.updateCurrencies = this.updateCurrencies.bind(this);
+    this.state = {text: '', inTrade: false, search: [], user: this.userData };
   }
 
   render() {
     return (
       <div>
-        <h3>Hello {this.props.user.name}</h3>
+        <h3>Hello {this.state.user.name}</h3>
         <ul>
-        {this.props.user.stocks.map((curr, i) => (
+        {this.state.user.stocks.map((curr, i) => (
           <li key={i}>
             <button
         type="submit"
@@ -45,7 +49,7 @@ class Home extends React.Component {
           </li>
         ))}
       </ul>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleWish}>
           <label htmlFor="new-todo">
             New Coin:
           </label>
@@ -57,8 +61,17 @@ class Home extends React.Component {
           <ul>
             {this.state.search.map((c, i) => (
               <li key={i}>
-                <button>
                   {c}
+                  <button
+                  onClick={
+                    this.handleWish}>
+                    Add to Wishlist
+                </button>
+                <button
+                type='button'
+                onClick={
+                  this.handleBuy}>
+                    Buy
                 </button>
               </li>
             ))}
@@ -68,16 +81,38 @@ class Home extends React.Component {
     );
   }
 
-  handleSubmit(e) {
+  async userData() {
+    let res = await UserSearch();
+    return res;
+  }
+
+  updateCurrencies() {
+    let coino = new Coin(this.state.text, 0);
+    let holdo = new Hold(coino);
+    this.setState({ text: '' });
+    return holdo;
+  }
+
+  handleWish(e) {
     e.preventDefault();
     if  (!this.state.inTrade) {
       if (this.state.text.length === 0) {
         return;
       }
-      let coino = new Coin(this.state.text, 0);
-      let holdo = new Hold(coino);
-      this.props.updateCurrencies(holdo);
-      this.setState({ text: '' });
+      let hold = this.updateCurrencies()
+      this.state.user.addHold(hold);
+    }
+  }
+
+  handleBuy(e) {
+    e.preventDefault();
+    if  (!this.state.inTrade) {
+      if (this.state.text.length === 0) {
+        return;
+      }
+      let hold = this.updateCurrencies()
+      this.state.user.addHold(hold);
+      this.selectTrade(hold);
     }
   }
 

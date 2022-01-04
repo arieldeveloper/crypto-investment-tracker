@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import RegisterPost from '../api/RegisterPost.js';
 
 export default function Register(props) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  function validateForm() {
-    return email.length > 0 && password.length > 0 && username.length > 0;
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    if (validateForm()) {
-        props.addUser(username);
-    }
+  async function handleSubmit(e) {
+      e.preventDefault()
+      let res = await RegisterPost(username, email, password, password);
+      console.log(res)
   }
 
   return (
@@ -40,25 +36,16 @@ export default function Register(props) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           />
-          {(() => { if (props.user != null && props.user.name == username) {
-          return ( 
-          <button type="button" >
-            <Link
-          to="/home"
-        >
-          Begin
-        </Link>
-          </button>)
-        }
-        
-        else {
-          return (
           <button type="submit" >
           Register
+          </button> <br></br>
+          <button type="button" >
+            <Link
+          to="/"
+        >
+          Go login!
+        </Link>
           </button>
-          )
-        }})()}  
-        
       </form>
     </div>
   );
