@@ -3,18 +3,24 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const flash = require('express-flash');
-
 const { pool } = require("../config/dbConfig");
 
+// initialize passport.js
 const passport = require("passport");
 const initializePassport = require("../config/passportConfig");
 initializePassport(passport); // sets up the passport to be used in app
 
-// middle ware
+
+//Configure session middleware
 router.use(session({
-    secret: 'secret',
+    secret: 'secret$%^134',
+    saveUninitialized: false,
     resave: false,
-    saveUninitialized: false
+    cookie: {
+        secure: false, // if true only transmit cookie over https
+        httpOnly: true,
+        maxAge: 1000 * 60 * 30 // session max age in miliseconds
+    }
 }));
 
 router.use(passport.initialize());
@@ -53,20 +59,33 @@ router.get("/register", checkAuthenticated, ((req, res) => {
     res.send("Please register");
 }))
 
+/**
+ * Logs the user out when making a get request to this route
+ */
 router.get('/logout', (req, res) => {
     req.logOut(); // built in function with passport
     res.send("You are now logged out. Please log back in")
 });
 
 router.get('/', checkNotAuthenticated, (req, res) => {
-    if (req.user) {
-        res.send(`You are currently logged in as ${req.user.name}`)
+    const sess = req.session;
+    if (sess.email) {
+        res.send(`You are currently logged in with ${sess.email}`)
     } else {
         res.send("HOME PAGE OF USERS DASHBOARD (need to login)")
     }
 });
 
-// POST request for registration
+/**
+ * Post request to register a user. Registers user
+ * Required:
+ * {
+ *     "name":
+ *     "email":
+ *     "password":
+ *     "password2":
+ * }
+ */
 router.post('/register', async(req, res) => {
     let {name, email, password, password2} = req.body;
 
@@ -81,7 +100,6 @@ router.post('/register', async(req, res) => {
     let errors = [];
 
     // Validation checks for registration
-
     // check for missing fields
     if (!name || !email || !password || !password2) {
         errors.push({message: "Please enter all of the fields"});
@@ -138,13 +156,21 @@ router.post('/register', async(req, res) => {
     }
 });
 
-
 // Login post request
-router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/'
-    // failureFlash:true
-    })
+/**
+ * To login, required in the body:
+ * {
+ *   "email":
+ *   "password":
+ * }
+ */
+router.post('/login', passport.authenticate('local'), (req, res) => {
+        // this gets called if login successful
+        const sess  = req.session;
+        const { email } = req.body;
+        sess.email = email;
+        res.send("success");
+    }
 );
 
 module.exports = router;

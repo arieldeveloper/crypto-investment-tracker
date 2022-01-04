@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 const { pool } = require("../config/dbConfig");
+
 router.use(express.json());
 router.get('/', (req, res) => {
     res.send('Main page loaded!')
@@ -23,6 +24,9 @@ router.get('/info/', (req, res) => {
     }
 );
 
+/**
+ * This post request takes in a ticker symbol as input and searches the coin market cap api for data to return
+ */
 router.post('/ticker/', (req, res) => {
     let tickerName = req.body.ticker;
     const apiKey = process.env.API_KEY;
