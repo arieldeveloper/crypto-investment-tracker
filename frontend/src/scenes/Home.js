@@ -32,7 +32,7 @@ class Home extends React.Component {
       <div>
         <h3>Hello {this.state.user.name}</h3>
         <ul>
-        {this.state.user.stocks?.map((curr, i) => (
+        {this.state.user.stocks.map((curr, i) => (
           <li key={i}>
             <button
         type="submit"
@@ -96,7 +96,7 @@ class Home extends React.Component {
 
   updateCurrencies() {
     let coino = new Coin(this.state.text, 0);
-    let holdo = new Hold(coino);
+    let holdo = new Hold(coino, []);
     this.setState({ text: '' });
     return holdo;
   }
