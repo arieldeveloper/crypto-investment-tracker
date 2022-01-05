@@ -5,10 +5,13 @@
  */
 function calculateCostAverage(trades) {
     let average = 0;
+    let coinAmount = 0;  // contains all the coins total in the portfolio
     for (const trade of trades) {
         average += trade.price;
+        coinAmount += trade.amount;
     }
-    return average / trade.amount;
+    // price total that you paid for everything, divided by the amount of coins you have
+    return average / coinAmount;
 }
 
 /**
@@ -24,6 +27,7 @@ function calculateGrowthPercentage(trades) {
     // Formula : sell price - buy price, divide by buy price and then multiply by 100.
     return (((last - first) / first) * 100);
 }
+
 
 
 
