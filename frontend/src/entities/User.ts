@@ -5,10 +5,11 @@ export default class User {
     name: string;
     stocks: Array<Hold>
 
-    constructor(name: string) {
+    constructor(name: string, hold: Array<Hold>) {
       this.name = name;
-      this.stocks = Array<Hold>();
+      this.stocks = hold;
     }
+
 
     addHold(stock: Hold) {
       this.stocks.push(stock);

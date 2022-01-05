@@ -6,6 +6,7 @@ import NewTrade from "../components/NewTrade"
 import { Link } from "react-router-dom";
 import TickerSearch from '../api/TickerSearch.js';
 import UserSearch from '../api/UserSearch.js';
+import User from "../entities/User.ts";
 
 class Home extends React.Component {
 
@@ -19,7 +20,11 @@ class Home extends React.Component {
     this.leaveScreen = this.leaveScreen.bind(this);
     this.userData = this.userData.bind(this)
     this.updateCurrencies = this.updateCurrencies.bind(this);
-    this.state = {text: '', inTrade: false, search: [], user: this.userData };
+    this.state = {text: '', inTrade: false, search: [], user: new User('john', []) };
+  }
+
+  componentDidMount() {
+    this.userData();
   }
 
   render() {
@@ -82,13 +87,16 @@ class Home extends React.Component {
   }
 
   async userData() {
+    console.log('started')
     let res = await UserSearch();
+    console.log(res);
+    this.setState({ user: res})
     return res;
   }
 
   updateCurrencies() {
     let coino = new Coin(this.state.text, 0);
-    let holdo = new Hold(coino);
+    let holdo = new Hold(coino, []);
     this.setState({ text: '' });
     return holdo;
   }

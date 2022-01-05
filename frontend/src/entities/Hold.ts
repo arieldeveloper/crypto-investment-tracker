@@ -8,10 +8,10 @@ export default class Hold {
     average: number;
     selected: Boolean;
   
-    constructor(coin: Coin) {
+    constructor(coin: Coin, trades: Array<Trade>) {
       this.coin = coin;
       this.selected = false;
-      this.trades = Array<Trade>();
+      this.trades = trades;
       this.average = 0;
     }
 

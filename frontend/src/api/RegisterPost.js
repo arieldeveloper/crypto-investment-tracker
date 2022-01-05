@@ -11,7 +11,7 @@ export default async (name, email, password, password2) => {
   let requirements = {
     name: name,
     email: email,
-    password, password,
+    password: password,
     password2: password2
   }
 
