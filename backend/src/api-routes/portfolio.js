@@ -110,4 +110,32 @@ router.get('/coins',(req, res) => {
     }
 );
 
+/**
+ * Get all the trades given a coin name in the post request
+ * ex. {
+ *     "coin":
+ * }
+ */
+router.post('/coin',(req, res) => {
+    const {coin} = req.body;
+    const sess = req.session;
+        if (sess.passport.user !== undefined) {
+            pool.query(
+                `SELECT * FROM trades WHERE (email='${sess.email}' AND coin='${coin}')`, (err, results) => {
+                    if (err) {
+                        throw err;
+                    }
+                    if (results.rows.length > 0) {
+                        res.send(results.rows);
+                    }
+                });
+        } else {
+            // redirect to the login
+            res.redirect("/api/users/login");
+        }
+    }
+);
+
+
+
 module.exports = router;
