@@ -3,11 +3,12 @@
  * This function returns the dollar cost average given a list of trades from the user
  * @param trades a list of trade objects, holding
  */
-function calculateCostAverage(trades) {
+export function calculateCostAverage(trades) {
     let average = 0;
     let coinAmount = 0;  // contains all the coins total in the portfolio
+        console.log('about to calculate');
     for (const trade of trades) {
-        average += trade.price;
+        average += trade.value;
         coinAmount += trade.amount;
     }
     // price total that you paid for everything, divided by the amount of coins you have
@@ -20,7 +21,7 @@ function calculateCostAverage(trades) {
  * Assumes that the list of trades is already sorted
  * @param trades
  */
-function calculateGrowthPercentage(trades) {
+export function calculateGrowthPercentage(trades) {
     const first = trades[0];
     const last = trades[trades.length];
 

@@ -10,7 +10,7 @@ export default async (email, password) => {
   let url = '/api/users/login';
   let requirements = {
     email: email,
-    password, password,
+    password: password,
   }
 
   return axios.post(url, requirements).then((response) => {

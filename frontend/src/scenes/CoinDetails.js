@@ -2,8 +2,7 @@ import React from "react";
 import NewTrade from "../components/NewTrade"
 import { Link } from "react-router-dom";
 import CoinSearch from '../api/CoinSearch.js';
-import Hold from "../entities/Hold.ts";
-import Coin from "../entities/Coin.ts";
+import { calculateCostAverage, calculateGrowthPercentage } from "../services/analysis";
 
 class CoinDetails extends React.Component {
   
@@ -12,7 +11,8 @@ class CoinDetails extends React.Component {
     this.endTrade = this.endTrade.bind(this);
     this.leaveScreen = this.leaveScreen.bind(this);
     this.coinData = this.coinData.bind(this);
-    this.state = {hold: null};
+    this.getTradeData = this.getTradeData.bind(this);
+    this.state = {hold: null, costAverage: 0};
   }
 
   componentDidMount() {
@@ -23,6 +23,7 @@ class CoinDetails extends React.Component {
     let res = await CoinSearch(this.props.hold.coin.name);
     console.log(res);
     this.setState({ hold: res});
+    this.getTradeData(this.state.hold.trades);
   }
 
   endTrade(curr) {
@@ -34,6 +35,13 @@ class CoinDetails extends React.Component {
     this.props.remove();
   }
 
+  getTradeData(trade) {
+    console.log('getTrade');
+    let ca = calculateCostAverage(trade);
+    this.setState({holdAverage: ca});
+    console.log(ca);
+  }
+
   render() {
     if (this.state.hold) {
       return (
@@ -42,7 +50,7 @@ class CoinDetails extends React.Component {
         <ul>
         {this.state.hold.trades.map((curr, i) => (
             <li key={i}>
-            {"Worth: " + curr.value + "  Bought at: " + curr.time}
+            {"Worth: " + curr.value + "  Bought at: " + curr.amount}
             </li>
           ))}
         </ul>

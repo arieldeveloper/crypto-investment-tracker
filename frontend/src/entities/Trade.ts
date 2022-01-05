@@ -1,10 +1,10 @@
 export default class Trade {
 
-    time: number;
+    amount: number;
     value: number;
   
-    constructor(time: number, value: number) {
-      this.time = time;
+    constructor(amount: number, value: number) {
+      this.amount = amount;
       this.value = value;
     }
 

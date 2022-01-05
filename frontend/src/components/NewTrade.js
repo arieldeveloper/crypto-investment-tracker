@@ -50,10 +50,11 @@ class NewTrade extends React.Component {
             />
             <label>
             {" "}
-              Time:{" "}
+              Amount:{" "}
             </label>
             <input
-              type="string"
+              type="number"
+              onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
               placeholder="Enter Time"
               onChange={this.setDate}
               required
