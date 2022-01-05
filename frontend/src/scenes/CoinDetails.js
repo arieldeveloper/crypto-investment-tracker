@@ -12,7 +12,7 @@ class CoinDetails extends React.Component {
     this.endTrade = this.endTrade.bind(this);
     this.leaveScreen = this.leaveScreen.bind(this);
     this.coinData = this.coinData.bind(this);
-    this.state = {hold: new Hold(new Coin("boop", 7), [])}
+    this.state = {hold: null}
   }
 
   componentDidMount() {
@@ -35,7 +35,8 @@ class CoinDetails extends React.Component {
   }
 
   render() {
-    return (
+    if (this.state.hold) {
+      return (
         <div>
         <h1>{this.state.hold.coin.name}</h1>
         <ul>
@@ -55,6 +56,11 @@ class CoinDetails extends React.Component {
         </button>
         </div>
     );
+    }
+    else {
+      return (<div></div>)
+    }
+    
   }
 }
 

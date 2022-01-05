@@ -22,7 +22,7 @@ class Home extends React.Component {
     this.leaveScreen = this.leaveScreen.bind(this);
     this.userData = this.userData.bind(this)
     this.updateCurrencies = this.updateCurrencies.bind(this);
-    this.state = {text: '', inTrade: false, search: [], user: new User('john', []), loggedIn: true };
+    this.state = {text: '', inTrade: false, search: [], user: null, loggedIn: true };
   }
 
   componentDidMount() {
@@ -33,6 +33,8 @@ class Home extends React.Component {
     if (!this.state.loggedIn) {
       return <Navigate to="/" choose={this.props.choose} login={this.props.login}/>
     }
+    if (this.state.user) {
+
     return (
       <div>
         <h3>Hello {this.state.user.name}</h3>
@@ -97,6 +99,10 @@ class Home extends React.Component {
         </button>
       </div>
     );
+  }
+  else {
+    return (<div></div>)
+  }
   }
 
   async userData() {
