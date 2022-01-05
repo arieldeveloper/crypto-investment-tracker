@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router();
 const session = require('express-session');
 const { pool } = require("../config/dbConfig");
+
+// Redis config
 const connectRedis = require('connect-redis');
 const RedisStore = connectRedis(session);
 const redisClient = require('../config/redisConfig');
@@ -17,10 +19,7 @@ router.use(session({
 
 router.use(express.json());
 
-router.get('/', (req, res) => {
-    res.send('Welcome to the portfolio');
-});
-
+// ROUTES
 /**
  * Adds a trade to the database
  */
@@ -64,9 +63,8 @@ router.post('/trade', (req, res) => {
     }
 });
 
-
 /**
- * Get the trades for the user who is currently logged in.
+ * Get all the trades for an authenticated user
  */
 router.get('/trades',(req, res) => {
     const sess = req.session;
@@ -86,5 +84,58 @@ router.get('/trades',(req, res) => {
     }
   }
 );
+
+
+/**
+ * Get all the coins that are from that users trades
+ * Returns them in alphabetical order and remove any duplicates since
+ * there can be multiple trades under the same coin name
+ */
+router.get('/coins',(req, res) => {
+        const sess = req.session;
+        if (sess.passport.user !== undefined) {
+            pool.query(
+                `SELECT DISTINCT ON (coin) coin FROM trades WHERE email='${sess.email}' ORDER BY coin`, (err, results) => {
+                    if (err) {
+                        throw err;
+                    }
+                    if (results.rows.length > 0) {
+                        res.send(results.rows);
+                    }
+                });
+        } else {
+            // redirect to the login
+            res.redirect("/api/users/login");
+        }
+    }
+);
+
+/**
+ * Get all the trades given a coin name in the post request
+ * ex. {
+ *     "coin":
+ * }
+ */
+router.post('/coin',(req, res) => {
+    const {coin} = req.body;
+    const sess = req.session;
+        if (sess.passport.user !== undefined) {
+            pool.query(
+                `SELECT * FROM trades WHERE (email='${sess.email}' AND coin='${coin}')`, (err, results) => {
+                    if (err) {
+                        throw err;
+                    }
+                    if (results.rows.length > 0) {
+                        res.send(results.rows);
+                    }
+                });
+        } else {
+            // redirect to the login
+            res.redirect("/api/users/login");
+        }
+    }
+);
+
+
 
 module.exports = router;
