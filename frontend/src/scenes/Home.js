@@ -6,6 +6,7 @@ import NewTrade from "../components/NewTrade"
 import { Link } from "react-router-dom";
 import TickerSearch from '../api/TickerSearch.js';
 import UserSearch from '../api/UserSearch.js';
+import User from "../entities/User.ts";
 
 class Home extends React.Component {
 
@@ -19,7 +20,11 @@ class Home extends React.Component {
     this.leaveScreen = this.leaveScreen.bind(this);
     this.userData = this.userData.bind(this)
     this.updateCurrencies = this.updateCurrencies.bind(this);
-    this.state = {text: '', inTrade: false, search: [], user: this.userData };
+    this.state = {text: '', inTrade: false, search: [], user: new User('john', []) };
+  }
+
+  componentDidMount() {
+    this.userData();
   }
 
   render() {
@@ -27,7 +32,7 @@ class Home extends React.Component {
       <div>
         <h3>Hello {this.state.user.name}</h3>
         <ul>
-        {this.state.user.stocks.map((curr, i) => (
+        {this.state.user.stocks?.map((curr, i) => (
           <li key={i}>
             <button
         type="submit"
@@ -82,7 +87,10 @@ class Home extends React.Component {
   }
 
   async userData() {
+    console.log('started')
     let res = await UserSearch();
+    console.log(res);
+    this.setState({ user: res})
     return res;
   }
 
