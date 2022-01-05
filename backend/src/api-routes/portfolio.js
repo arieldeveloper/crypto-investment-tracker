@@ -64,9 +64,8 @@ router.post('/trade', (req, res) => {
     }
 });
 
-
 /**
- * Get the trades for the user who is currently logged in.
+ * Get all the trades for an authenticated user
  */
 router.get('/trades',(req, res) => {
     const sess = req.session;
@@ -85,6 +84,31 @@ router.get('/trades',(req, res) => {
         res.redirect("/api/users/login");
     }
   }
+);
+
+
+/**
+ * Get all the coins that are from that users trades
+ * Returns them in alphabetical order and remove any duplicates since
+ * there can be multiple trades under the same coin name
+ */
+router.get('/coins',(req, res) => {
+        const sess = req.session;
+        if (sess.passport.user !== undefined) {
+            pool.query(
+                `SELECT DISTINCT ON (coin) coin FROM trades WHERE email='${sess.email}' ORDER BY coin`, (err, results) => {
+                    if (err) {
+                        throw err;
+                    }
+                    if (results.rows.length > 0) {
+                        res.send(results.rows);
+                    }
+                });
+        } else {
+            // redirect to the login
+            res.redirect("/api/users/login");
+        }
+    }
 );
 
 module.exports = router;
