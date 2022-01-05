@@ -3,6 +3,7 @@ import NewTrade from "../components/NewTrade"
 import { Link } from "react-router-dom";
 import CoinSearch from '../api/CoinSearch.js';
 import Hold from "../entities/Hold.ts";
+import Coin from "../entities/Coin.ts";
 
 class CoinDetails extends React.Component {
   
@@ -11,7 +12,7 @@ class CoinDetails extends React.Component {
     this.endTrade = this.endTrade.bind(this);
     this.leaveScreen = this.leaveScreen.bind(this);
     this.coinData = this.coinData.bind(this);
-    this.state = {hold: new Hold("boop", [])}
+    this.state = {hold: new Hold(new Coin("boop", 7), [])}
   }
 
   componentDidMount() {
@@ -20,7 +21,8 @@ class CoinDetails extends React.Component {
 
   async coinData() {
     let res = await CoinSearch(this.props.hold.coin.name)
-    // this.setState({ hold: res})
+    console.log(res);
+    this.setState({ hold: res})
   }
 
   endTrade(curr) {

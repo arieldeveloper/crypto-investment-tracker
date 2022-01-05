@@ -19,9 +19,9 @@ export default async () => {
     let coinlist = await getCoins();
     let Holds = [];
     for (let i = 0; i < coinlist.length; i++) {
-        Holds.push(new Hold(new Coin(coinlist[i].name, coinlist[i].value)))
+        Holds.push(new Hold(new Coin(coinlist[i].coin, 0), []))
     }
-    return new User(name, [])
+    return new User(name, Holds);
   } catch {
     console.log(`Failed to make a call to the api to get data for the user logged in`)
     return new User('johny', [])
@@ -39,15 +39,14 @@ export default async () => {
     )}
 
    async function getCoins() {
-        // return axios.get(coinUrl).then((response) => {
-        //     // console.log(response)
-        //     try {
-        //         return response.data;
-        //     } catch {
-        //        return [];
-        //     }
-        // } 
-    // )
-    return [];
+        return axios.get(coinUrl).then((response) => {
+            console.log(response.data)
+            try {
+                return response.data;
+            } catch {
+               return [];
+            }
+        } 
+    )
 }
 }

@@ -22,8 +22,9 @@ class NewTrade extends React.Component {
 
   async finishTrade(e) {
     e.preventDefault();
+    console.log(this.props.stock.coin.name)
     this.props.stock.addTrade(new Trade(this.state.value, this.state.date))
-    let res = await TradePost(this.props.stock.name, this.state.value, this.state.date);
+    let res = await TradePost(this.props.stock.coin.name, this.state.value, this.state.date);
     console.log(res);
     this.setState(state => ({
       value: 0,

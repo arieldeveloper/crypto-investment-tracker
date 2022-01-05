@@ -133,6 +133,7 @@ class Home extends React.Component {
   selectTrade(curr) {
     if  (!this.state.inTrade) {
       curr.select();
+      console.log(curr.coin.name)
       this.setState({ inTrade: true });
     }
     else if (curr.selected) {

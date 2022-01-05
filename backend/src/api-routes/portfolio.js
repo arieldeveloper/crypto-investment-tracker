@@ -32,6 +32,9 @@ router.post('/trade', (req, res) => {
         let errors = [];
 
         // check for missing fields
+        console.log(coin);
+        console.log(amount);
+        console.log(price);
         if (!coin || !amount || !price) {
             errors.push({message: "Please enter all of the fields"});
         }
@@ -92,6 +95,7 @@ router.get('/trades',(req, res) => {
  * there can be multiple trades under the same coin name
  */
 router.get('/coins',(req, res) => {
+    console.log('here');
         const sess = req.session;
         if (sess.passport.user !== undefined) {
             pool.query(
@@ -99,9 +103,10 @@ router.get('/coins',(req, res) => {
                     if (err) {
                         throw err;
                     }
-                    if (results.rows.length > 0) {
+                    if (results.rows.length > 0 || results.rows.length == 0) {
                         res.send(results.rows);
                     }
+
                 });
         } else {
             // redirect to the login
@@ -118,6 +123,7 @@ router.get('/coins',(req, res) => {
  */
 router.post('/coin',(req, res) => {
     const {coin} = req.body;
+    console.log(coin);
     const sess = req.session;
         if (sess.passport.user !== undefined) {
             pool.query(
@@ -126,6 +132,7 @@ router.post('/coin',(req, res) => {
                         throw err;
                     }
                     if (results.rows.length > 0) {
+                        console.log(results.rows);
                         res.send(results.rows);
                     }
                 });
