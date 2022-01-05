@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router();
 const session = require('express-session');
 const { pool } = require("../config/dbConfig");
+
+// Redis config
 const connectRedis = require('connect-redis');
 const RedisStore = connectRedis(session);
 const redisClient = require('../config/redisConfig');
@@ -17,10 +19,7 @@ router.use(session({
 
 router.use(express.json());
 
-router.get('/', (req, res) => {
-    res.send('Welcome to the portfolio');
-});
-
+// ROUTES
 /**
  * Adds a trade to the database
  */
