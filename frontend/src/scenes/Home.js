@@ -3,16 +3,18 @@ import React from 'react';
 import Hold  from "../entities/Hold.ts"
 import Coin from "../entities/Coin.ts"
 import NewTrade from "../components/NewTrade"
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import TickerSearch from '../api/TickerSearch.js';
 import UserSearch from '../api/UserSearch.js';
 import User from "../entities/User.ts";
+import LogoutPost from '../api/LogoutPost.js';
 
 class Home extends React.Component {
 
   constructor(props) {
     super(props);
     this.handleWish = this.handleWish.bind(this);
+    this.logout = this.logout.bind(this);
     this.handleBuy = this.handleBuy.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.selectTrade = this.selectTrade.bind(this);
@@ -20,7 +22,7 @@ class Home extends React.Component {
     this.leaveScreen = this.leaveScreen.bind(this);
     this.userData = this.userData.bind(this)
     this.updateCurrencies = this.updateCurrencies.bind(this);
-    this.state = {text: '', inTrade: false, search: [], user: new User('john', []) };
+    this.state = {text: '', inTrade: false, search: [], user: new User('john', []), loggedIn: true };
   }
 
   componentDidMount() {
@@ -28,6 +30,9 @@ class Home extends React.Component {
   }
 
   render() {
+    if (!this.state.loggedIn) {
+      return <Navigate to="/" choose={this.props.choose} login={this.props.login}/>
+    }
     return (
       <div>
         <h3>Hello {this.state.user.name}</h3>
@@ -82,6 +87,14 @@ class Home extends React.Component {
             ))}
             </ul>
         </form>
+        <button
+          onClick= {this.logout}>
+        {/* <Link
+          to="/"
+        > */}
+          Logout
+        {/* </Link> */}
+        </button>
       </div>
     );
   }
@@ -89,9 +102,17 @@ class Home extends React.Component {
   async userData() {
     console.log('started')
     let res = await UserSearch();
-    console.log(res);
-    this.setState({ user: res})
-    return res;
+    if (res == false) {
+      this.setState({loggedIn: false})
+    }
+    else {
+      this.setState({ user: res})
+    } 
+  }
+
+  async logout() {
+    LogoutPost();
+    this.setState({loggedIn: false});
   }
 
   updateCurrencies() {

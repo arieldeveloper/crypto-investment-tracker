@@ -24,7 +24,7 @@ export default async () => {
     return new User(name, Holds);
   } catch {
     console.log(`Failed to make a call to the api to get data for the user logged in`)
-    return new User('johny', [])
+    return false;
   }
   
   async function getName() {
