@@ -49,7 +49,7 @@ class Home extends React.Component {
           { curr.coin.name }
         </Link>
       </button>
-          {"  worth: " + curr.coin.value + "  bought at: " + curr.average}
+          {"  worth: " + curr.coin.value}
           <button
           type="submit"
           onClick= {() => this.selectTrade(curr)}>
