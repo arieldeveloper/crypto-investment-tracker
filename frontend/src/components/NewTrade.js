@@ -1,12 +1,12 @@
 import React from "react";
 import TradePost from '../api/TradePost.js';
-import Trade from "../entities/Trade.ts"
+import Trade from "../entities/Trade.ts";
 
 class NewTrade extends React.Component {
   
   constructor(props) {
     super(props);
-    this.state = {value: 0, date: 0}
+    this.state = {value: 0, date: 0};
     this.setValue = this.setValue.bind(this);
     this.setDate = this.setDate.bind(this);
     this.finishTrade = this.finishTrade.bind(this);
@@ -22,13 +22,13 @@ class NewTrade extends React.Component {
 
   async finishTrade(e) {
     e.preventDefault();
-    console.log(this.props.stock.coin.name)
-    this.props.stock.addTrade(new Trade(this.state.value, this.state.date))
+    console.log(this.props.stock.coin.name);
+    this.props.stock.addTrade(new Trade(this.state.value, this.state.date));
     let res = await TradePost(this.props.stock.coin.name, this.state.value, this.state.date);
     console.log(res);
-    this.props.endTrade(this.props.stock)
-    this.setState({value: ''})
-    this.setState({date: ''})
+    this.props.endTrade(this.props.stock);
+    this.setState({value: ''});
+    this.setState({date: ''});
   }
 
   render() {

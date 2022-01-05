@@ -18,7 +18,7 @@ export default async (email, password) => {
     try {
       return response.data;
     } catch {
-      console.log(`Failed to make a call to the api to login user for email ${email}`)
+      console.log(`Failed to make a call to the api to login user for email ${email}`);
       return 'fail';
     }
   })

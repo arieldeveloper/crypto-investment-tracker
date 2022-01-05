@@ -10,11 +10,11 @@ export default async () => {
   let url = '/api/users/logout';
 
   return axios.get(url).then((response) => {
-    console.log(response)
+    console.log(response);
     try {
       return response.data;
     } catch {
-      console.log(`Failed to logout`)
+      console.log(`Failed to logout`);
       return 'fail';
     }
   })

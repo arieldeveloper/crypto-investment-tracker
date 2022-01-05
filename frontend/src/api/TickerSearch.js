@@ -13,11 +13,11 @@ export default async (searchString) => {
   }
 
   return axios.post(url, requirements).then((response) => {
-    console.log(response)
+    console.log(response);
     try {
       return [create_name(response)];
     } catch {
-      console.log(`Trying to make a call to the api to search for ${searchString}`)
+      console.log(`Trying to make a call to the api to search for ${searchString}`);
       return [];
     }
   })

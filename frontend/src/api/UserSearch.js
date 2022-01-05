@@ -15,32 +15,32 @@ export default async () => {
 
   try {
     let name = await getName();
-    console.log(name)
+    console.log(name);
     let coinlist = await getCoins();
     let Holds = [];
     for (let i = 0; i < coinlist.length; i++) {
-        Holds.push(new Hold(new Coin(coinlist[i].coin, 0), []))
+        Holds.push(new Hold(new Coin(coinlist[i].coin, 0), []));
     }
     return new User(name, Holds);
   } catch {
-    console.log(`Failed to make a call to the api to get data for the user logged in`)
+    console.log(`Failed to make a call to the api to get data for the user logged in`);
     return false;
   }
   
   async function getName() {
     return axios.get(nameUrl).then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         try {
             return response.data;
         } catch {
-           return 'no one'
+           return 'no one';
         }
     }
     )}
 
    async function getCoins() {
         return axios.get(coinUrl).then((response) => {
-            console.log(response.data)
+            console.log(response.data);
             try {
                 return response.data;
             } catch {

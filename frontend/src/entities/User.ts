@@ -3,7 +3,7 @@ import  Hold  from "./Hold"
 export default class User {
 
     name: string;
-    stocks: Array<Hold>
+    stocks: Array<Hold>;
 
     constructor(name: string, hold: Array<Hold>) {
       this.name = name;

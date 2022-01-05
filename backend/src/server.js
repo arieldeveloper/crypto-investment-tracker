@@ -17,5 +17,5 @@ app.use('/api/portfolio', portfolioRoute);
 
 // listen
 app.listen(port, () => {
-    console.log(`express is running on ${port}`)
+    console.log(`express is running on ${port}`);
 });

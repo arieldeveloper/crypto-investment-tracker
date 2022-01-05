@@ -6,7 +6,6 @@ import NewTrade from "../components/NewTrade"
 import { Link, Navigate } from "react-router-dom";
 import TickerSearch from '../api/TickerSearch.js';
 import UserSearch from '../api/UserSearch.js';
-import User from "../entities/User.ts";
 import LogoutPost from '../api/LogoutPost.js';
 
 class Home extends React.Component {
@@ -20,7 +19,7 @@ class Home extends React.Component {
     this.selectTrade = this.selectTrade.bind(this);
     this.endTrade = this.endTrade.bind(this);
     this.leaveScreen = this.leaveScreen.bind(this);
-    this.userData = this.userData.bind(this)
+    this.userData = this.userData.bind(this);
     this.updateCurrencies = this.updateCurrencies.bind(this);
     this.state = {text: '', inTrade: false, search: [], user: null, loggedIn: true };
   }
@@ -91,28 +90,24 @@ class Home extends React.Component {
         </form>
         <button
           onClick= {this.logout}>
-        {/* <Link
-          to="/"
-        > */}
           Logout
-        {/* </Link> */}
         </button>
       </div>
     );
   }
   else {
-    return (<div></div>)
+    return (<div></div>);
   }
   }
 
   async userData() {
-    console.log('started')
+    console.log('started');
     let res = await UserSearch();
     if (res == false) {
-      this.setState({loggedIn: false})
+      this.setState({loggedIn: false});
     }
     else {
-      this.setState({ user: res})
+      this.setState({ user: res});
     } 
   }
 
@@ -134,7 +129,7 @@ class Home extends React.Component {
       if (this.state.text.length === 0) {
         return;
       }
-      let hold = this.updateCurrencies()
+      let hold = this.updateCurrencies();
       this.state.user.addHold(hold);
     }
   }
@@ -145,7 +140,7 @@ class Home extends React.Component {
       if (this.state.text.length === 0) {
         return;
       }
-      let hold = this.updateCurrencies()
+      let hold = this.updateCurrencies();
       this.state.user.addHold(hold);
       this.selectTrade(hold);
     }
@@ -154,13 +149,13 @@ class Home extends React.Component {
   async handleChange(e) {
     this.setState({ text: e.target.value });
     let res = await TickerSearch(e.target.value);
-    this.setState({ search: res})
+    this.setState({ search: res});
   }
 
   selectTrade(curr) {
     if  (!this.state.inTrade) {
       curr.select();
-      console.log(curr.coin.name)
+      console.log(curr.coin.name);
       this.setState({ inTrade: true });
     }
     else if (curr.selected) {

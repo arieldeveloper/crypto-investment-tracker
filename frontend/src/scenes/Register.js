@@ -8,9 +8,9 @@ export default function Register(props) {
   const [password, setPassword] = useState("");
 
   async function handleSubmit(e) {
-      e.preventDefault()
+      e.preventDefault();
       let res = await RegisterPost(username, email, password, password);
-      console.log(res)
+      console.log(res);
   }
 
   return (

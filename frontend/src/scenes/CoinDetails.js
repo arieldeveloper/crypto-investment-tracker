@@ -12,7 +12,7 @@ class CoinDetails extends React.Component {
     this.endTrade = this.endTrade.bind(this);
     this.leaveScreen = this.leaveScreen.bind(this);
     this.coinData = this.coinData.bind(this);
-    this.state = {hold: null}
+    this.state = {hold: null};
   }
 
   componentDidMount() {
@@ -20,17 +20,17 @@ class CoinDetails extends React.Component {
   }
 
   async coinData() {
-    let res = await CoinSearch(this.props.hold.coin.name)
+    let res = await CoinSearch(this.props.hold.coin.name);
     console.log(res);
-    this.setState({ hold: res})
+    this.setState({ hold: res});
   }
 
   endTrade(curr) {
-    this.setState({})
+    this.setState({});
   }
 
   leaveScreen() {
-    this.setState({})
+    this.setState({});
     this.props.remove();
   }
 
@@ -58,7 +58,7 @@ class CoinDetails extends React.Component {
     );
     }
     else {
-      return (<div></div>)
+      return (<div></div>);
     }
     
   }

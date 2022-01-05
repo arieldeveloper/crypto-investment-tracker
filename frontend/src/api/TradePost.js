@@ -15,11 +15,11 @@ export default async (coin, amount, price) => {
   }
 
   return axios.post(url, requirements).then((response) => {
-    console.log(response)
+    console.log(response);
     try {
       return response.data;
     } catch {
-      console.log(`Failed to make a  new trade for coin ${coin}`)
+      console.log(`Failed to make a  new trade for coin ${coin}`);
       return 'fail';
     }
   })
