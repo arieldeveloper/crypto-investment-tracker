@@ -47,7 +47,7 @@ class App extends React.Component {
   }
 
   addUser(username) {
-    let u = new User(username)
+    let u = new User(username);
     this.setState({ user: u});
   }
 
@@ -57,8 +57,8 @@ class App extends React.Component {
       <BrowserRouter>
         <Routes>
           <Route path="/register" element={<Register/>} />
-          <Route path="/" element={<Login login={this.login} logout={this.logout} loggedIn={this.state.loggedIn} />} />
-          <Route path="/home" element={<Home choose={this.choose}/>} />
+          <Route path="/" element={<Login login={this.login} choose={this.choose}/>} />
+          <Route path="/home" element={<Home choose={this.choose} login={this.login}/>} />
           <Route path="/inspect" element={<CoinDetails hold={this.state.choice} remove={this.remove} />} />
           </Routes>
       </BrowserRouter>

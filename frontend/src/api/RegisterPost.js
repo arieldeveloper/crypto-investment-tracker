@@ -16,11 +16,11 @@ export default async (name, email, password, password2) => {
   }
 
   return axios.post(url, requirements).then((response) => {
-    console.log(response)
+    console.log(response);
     try {
       return [create_name(response)];
     } catch {
-      console.log(`Trying to make a call to the api to create user for email ${email}`)
+      console.log(`Trying to make a call to the api to create user for email ${email}`);
       return [];
     }
   })

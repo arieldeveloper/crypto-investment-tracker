@@ -5,6 +5,7 @@ import LoginPost from '../api/LoginPost.js';
 export default function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loggedIn, setloggedIn] = useState(false);
 
 
   async function handleSubmit(event) {
@@ -13,11 +14,12 @@ export default function Login(props) {
       console.log(res);
       if (res === 'success') {
         props.login(username);
+        setloggedIn(true);
       }
-      props.logout();
   }
-  if (props.loggedIn) {
-    return <Navigate to="/home" choose={props.choose}/>
+
+  if (loggedIn) {
+    return <Navigate to="/home" choose={props.choose} login={props.login}/>
   }
   return (
     <div className="Login">

@@ -12,12 +12,10 @@ export default class Hold {
       this.coin = coin;
       this.selected = false;
       this.trades = trades;
-      this.average = 0;
     }
 
     addTrade(trade: Trade) {
       this.trades.push(trade);
-      this.average += trade.value;
     }
 
     select() {

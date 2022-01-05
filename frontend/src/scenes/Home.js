@@ -3,24 +3,25 @@ import React from 'react';
 import Hold  from "../entities/Hold.ts"
 import Coin from "../entities/Coin.ts"
 import NewTrade from "../components/NewTrade"
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import TickerSearch from '../api/TickerSearch.js';
 import UserSearch from '../api/UserSearch.js';
-import User from "../entities/User.ts";
+import LogoutPost from '../api/LogoutPost.js';
 
 class Home extends React.Component {
 
   constructor(props) {
     super(props);
     this.handleWish = this.handleWish.bind(this);
+    this.logout = this.logout.bind(this);
     this.handleBuy = this.handleBuy.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.selectTrade = this.selectTrade.bind(this);
     this.endTrade = this.endTrade.bind(this);
     this.leaveScreen = this.leaveScreen.bind(this);
-    this.userData = this.userData.bind(this)
+    this.userData = this.userData.bind(this);
     this.updateCurrencies = this.updateCurrencies.bind(this);
-    this.state = {text: '', inTrade: false, search: [], user: new User('john', []) };
+    this.state = {text: '', inTrade: false, search: [], user: null, loggedIn: true };
   }
 
   componentDidMount() {
@@ -28,6 +29,11 @@ class Home extends React.Component {
   }
 
   render() {
+    if (!this.state.loggedIn) {
+      return <Navigate to="/" choose={this.props.choose} login={this.props.login}/>
+    }
+    if (this.state.user) {
+
     return (
       <div>
         <h3>Hello {this.state.user.name}</h3>
@@ -44,7 +50,7 @@ class Home extends React.Component {
           { curr.coin.name }
         </Link>
       </button>
-          {"  worth: " + curr.coin.value + "  bought at: " + curr.average}
+          {"  worth: " + curr.coin.value}
           <button
           type="submit"
           onClick= {() => this.selectTrade(curr)}>
@@ -82,16 +88,32 @@ class Home extends React.Component {
             ))}
             </ul>
         </form>
+        <button
+          onClick= {this.logout}>
+          Logout
+        </button>
       </div>
     );
   }
+  else {
+    return (<div></div>);
+  }
+  }
 
   async userData() {
-    console.log('started')
+    console.log('started');
     let res = await UserSearch();
-    console.log(res);
-    this.setState({ user: res})
-    return res;
+    if (res == false) {
+      this.setState({loggedIn: false});
+    }
+    else {
+      this.setState({ user: res});
+    } 
+  }
+
+  async logout() {
+    LogoutPost();
+    this.setState({loggedIn: false});
   }
 
   updateCurrencies() {
@@ -107,7 +129,7 @@ class Home extends React.Component {
       if (this.state.text.length === 0) {
         return;
       }
-      let hold = this.updateCurrencies()
+      let hold = this.updateCurrencies();
       this.state.user.addHold(hold);
     }
   }
@@ -118,7 +140,7 @@ class Home extends React.Component {
       if (this.state.text.length === 0) {
         return;
       }
-      let hold = this.updateCurrencies()
+      let hold = this.updateCurrencies();
       this.state.user.addHold(hold);
       this.selectTrade(hold);
     }
@@ -127,13 +149,13 @@ class Home extends React.Component {
   async handleChange(e) {
     this.setState({ text: e.target.value });
     let res = await TickerSearch(e.target.value);
-    this.setState({ search: res})
+    this.setState({ search: res});
   }
 
   selectTrade(curr) {
     if  (!this.state.inTrade) {
       curr.select();
-      console.log(curr.coin.name)
+      console.log(curr.coin.name);
       this.setState({ inTrade: true });
     }
     else if (curr.selected) {

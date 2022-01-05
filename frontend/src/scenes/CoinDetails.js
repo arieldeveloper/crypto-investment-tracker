@@ -12,7 +12,7 @@ class CoinDetails extends React.Component {
     this.endTrade = this.endTrade.bind(this);
     this.leaveScreen = this.leaveScreen.bind(this);
     this.coinData = this.coinData.bind(this);
-    this.state = {hold: new Hold(new Coin("boop", 7), [])}
+    this.state = {hold: null};
   }
 
   componentDidMount() {
@@ -20,22 +20,23 @@ class CoinDetails extends React.Component {
   }
 
   async coinData() {
-    let res = await CoinSearch(this.props.hold.coin.name)
+    let res = await CoinSearch(this.props.hold.coin.name);
     console.log(res);
-    this.setState({ hold: res})
+    this.setState({ hold: res});
   }
 
   endTrade(curr) {
-    this.setState({})
+    this.setState({});
   }
 
   leaveScreen() {
-    this.setState({})
+    this.setState({});
     this.props.remove();
   }
 
   render() {
-    return (
+    if (this.state.hold) {
+      return (
         <div>
         <h1>{this.state.hold.coin.name}</h1>
         <ul>
@@ -55,6 +56,11 @@ class CoinDetails extends React.Component {
         </button>
         </div>
     );
+    }
+    else {
+      return (<div></div>);
+    }
+    
   }
 }
 
