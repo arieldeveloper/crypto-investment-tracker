@@ -23,7 +23,9 @@ export default async (coin) => {
                 trades.push(new Trade(data[i].amount_of_coins, data[i].price))
             }
             let coino = new Coin(data[0].coin)
-            return new Hold(coino, trades)
+            let holdo = new Hold(coino, trades)
+            holdo.select();
+            return holdo;
         } catch {
            return [];
         }

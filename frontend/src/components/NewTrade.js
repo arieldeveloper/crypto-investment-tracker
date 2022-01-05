@@ -26,11 +26,9 @@ class NewTrade extends React.Component {
     this.props.stock.addTrade(new Trade(this.state.value, this.state.date))
     let res = await TradePost(this.props.stock.coin.name, this.state.value, this.state.date);
     console.log(res);
-    this.setState(state => ({
-      value: 0,
-      text: 0,
-    }));
     this.props.endTrade(this.props.stock)
+    this.setState({value: ''})
+    this.setState({date: ''})
   }
 
   render() {
