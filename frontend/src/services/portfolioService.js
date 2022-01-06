@@ -7,10 +7,7 @@
 
  export function calculatePortfolioStats(holds) {
 
-    console.log("XXXXXXXXXXXXXXXx")
-    console.log(holds)
     let {sum, worth} = sumOfCoins(holds);
-    console.log(sum, worth);
 
     let retPer = (worth - sum) / sum;
     let retVal = worth - sum;

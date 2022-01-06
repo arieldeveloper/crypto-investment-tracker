@@ -20,7 +20,6 @@ class CoinDetails extends React.Component {
   async coinData() {
     let res = await CoinSearch(this.props.hold.coin.name);
     res.select()
-    console.log(res);
     this.setState({ hold: res});
 
   }

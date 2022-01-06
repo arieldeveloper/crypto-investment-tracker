@@ -10,7 +10,6 @@ export default function Register(props) {
   async function handleSubmit(e) {
       e.preventDefault();
       let res = await RegisterPost(username, email, password, password);
-      console.log(res);
   }
 
   return (

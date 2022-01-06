@@ -14,7 +14,6 @@ export default async (email, password) => {
   }
 
   return axios.post(url, requirements).then((response) => {
-    console.log(response)
     try {
       return response.data;
     } catch {

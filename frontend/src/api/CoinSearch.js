@@ -38,7 +38,5 @@ export default async (coin) => {
     }
     )
   }
-    
-    // let price = await TickerSearch(data[0].coin, false);
 
 }

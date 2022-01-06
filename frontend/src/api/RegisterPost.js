@@ -16,7 +16,6 @@ export default async (name, email, password, password2) => {
   }
 
   return axios.post(url, requirements).then((response) => {
-    console.log(response);
     try {
       return [create_name(response)];
     } catch {
@@ -30,8 +29,6 @@ export default async (name, email, password, password2) => {
    * This is how the string is dispayed.
    */
   function create_name(data) {
-    console.log('yeet');
-    console.log(data.data[0]);
     let nam = data.data[0].name;
     let em = data.data[0].email;
     let pas = data.data[0].password;

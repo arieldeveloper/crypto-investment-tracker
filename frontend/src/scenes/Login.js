@@ -11,7 +11,6 @@ export default function Login(props) {
   async function handleSubmit(event) {
     event.preventDefault();
     let res = await LoginPost(username, password);
-      console.log(res);
       if (res === 'success') {
         props.login(username);
         setloggedIn(true);

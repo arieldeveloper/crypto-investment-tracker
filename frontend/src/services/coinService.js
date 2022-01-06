@@ -11,7 +11,6 @@ export function calculateBaseStats(trades, coin) {
     let {average, sum, coinAmount} = sumOfTrades(trades);
 
     let totalWorth = worth * coinAmount;
-    console.log(worth)
     let retPer = (worth - average) / average;
     let retVal = retPer * sum;
     let retCoin = retPer * average
@@ -26,7 +25,6 @@ export function calculateBaseStats(trades, coin) {
         returnPerCoin: retCoin
     }
 
-    console.log(data)
     return data
 
 }
@@ -39,7 +37,6 @@ function sumOfTrades(trades) {
         coinAmount += trade.amount;
     }
     let average = sum / coinAmount;
-    console.log({average, sum, coinAmount})
     return {average, sum, coinAmount};
 }
 

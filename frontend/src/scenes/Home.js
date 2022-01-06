@@ -101,14 +101,12 @@ class Home extends React.Component {
   }
 
   async userData() {
-    console.log('started');
     let res = await UserSearch();
     if (res == false) {
       this.setState({loggedIn: false});
     }
     else {
       this.setState({ user: res});
-      console.log(this.state.user.data)
     } 
   }
 
@@ -156,7 +154,6 @@ class Home extends React.Component {
   selectTrade(curr) {
     if  (!this.state.inTrade) {
       curr.select();
-      console.log(curr.coin.name);
       this.setState({ inTrade: true });
     }
     else if (curr.selected) {

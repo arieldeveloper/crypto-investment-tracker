@@ -13,7 +13,6 @@ export default async (searchString, show) => {
   }
 
   return axios.post(url, requirements).then((response) => {
-    console.log(response);
     try {
       return [create_name(response)];
     } catch {
@@ -28,8 +27,7 @@ export default async (searchString, show) => {
    */
   function create_name(data) {
     if (show) {
-      let nam = data.data.data[searchString].name;
-    console.log(nam);
+    let nam = data.data.data[searchString].name;
     let tkr = searchString;
     let val = data.data.data[searchString].quote.USD.price;
     return String(nam + " - " + tkr + ": " + String(val));
