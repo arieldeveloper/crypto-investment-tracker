@@ -22,9 +22,8 @@ export default async (coin) => {
             for (let i = 0; i < data.length; i++) {
                 trades.push(new Trade(parseInt(data[i].price), data[i].amount_of_coins));
             }
-            let coino = new Coin(data[0].coin);
+            let coino = new Coin(data[0].coin, 1);
             let holdo = new Hold(coino, trades);
-            holdo.select();
             return holdo;
         } catch {
            return [];

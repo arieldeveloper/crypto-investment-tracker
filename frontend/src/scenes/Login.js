@@ -19,7 +19,7 @@ export default function Login(props) {
   }
 
   if (loggedIn) {
-    return <Navigate to="/home" choose={props.choose} login={props.login}/>
+    return <Navigate to="/home"/>
   }
   return (
     <div className="Login">

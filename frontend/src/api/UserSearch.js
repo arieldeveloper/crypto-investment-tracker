@@ -2,6 +2,7 @@ import User from "../entities/User.ts";
 import Coin from "../entities/Coin.ts";
 import Hold from "../entities/Hold.ts";
 import axios from "axios";
+import CoinSearch from "./CoinSearch";
 
 /**
  * This function takes in a string and returns a searched coin through the backend api call
@@ -19,7 +20,11 @@ export default async () => {
     let coinlist = await getCoins();
     let Holds = [];
     for (let i = 0; i < coinlist.length; i++) {
-        Holds.push(new Hold(new Coin(coinlist[i].coin, 0), []));
+        let curCoin = coinlist[i].coin;
+        console.log(curCoin)
+        let curHold = await CoinSearch(curCoin);
+        console.log(curHold.coin.name)
+        Holds.push(curHold);
     }
     return new User(name, Holds);
   } catch {

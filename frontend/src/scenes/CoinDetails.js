@@ -2,7 +2,6 @@ import React from "react";
 import NewTrade from "../components/NewTrade"
 import { Link } from "react-router-dom";
 import CoinSearch from '../api/CoinSearch.js';
-import { calculateCostAverage, calculateGrowthPercentage } from "../services/analysis";
 
 class CoinDetails extends React.Component {
   
@@ -11,8 +10,7 @@ class CoinDetails extends React.Component {
     this.endTrade = this.endTrade.bind(this);
     this.leaveScreen = this.leaveScreen.bind(this);
     this.coinData = this.coinData.bind(this);
-    this.getTradeData = this.getTradeData.bind(this);
-    this.state = {hold: null, costAverage: 0};
+    this.state = {hold: null};
   }
 
   componentDidMount() {
@@ -21,9 +19,10 @@ class CoinDetails extends React.Component {
 
   async coinData() {
     let res = await CoinSearch(this.props.hold.coin.name);
+    res.select()
     console.log(res);
     this.setState({ hold: res});
-    this.getTradeData(this.state.hold.trades);
+
   }
 
   endTrade(curr) {
@@ -33,13 +32,6 @@ class CoinDetails extends React.Component {
   leaveScreen() {
     this.setState({});
     this.props.remove();
-  }
-
-  getTradeData(trade) {
-    console.log('getTrade');
-    let ca = calculateCostAverage(trade);
-    this.setState({holdAverage: ca});
-    console.log(ca);
   }
 
   render() {

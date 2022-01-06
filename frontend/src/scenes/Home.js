@@ -30,7 +30,7 @@ class Home extends React.Component {
 
   render() {
     if (!this.state.loggedIn) {
-      return <Navigate to="/" choose={this.props.choose} login={this.props.login}/>
+      return <Navigate to="/"/>
     }
     if (this.state.user) {
 
