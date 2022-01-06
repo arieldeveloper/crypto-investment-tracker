@@ -7,6 +7,8 @@ import { Link, Navigate } from "react-router-dom";
 import TickerSearch from '../api/TickerSearch.js';
 import UserSearch from '../api/UserSearch.js';
 import LogoutPost from '../api/LogoutPost.js';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import '../auth.css'
 
 class Home extends React.Component {
 
@@ -25,14 +27,14 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    this.userData();
+    // this.userData();
   }
 
   render() {
     if (!this.state.loggedIn) {
       return <Navigate to="/"/>
     }
-    if (this.state.user) {
+    if (!this.state.loggedIn) {
 
     return (
       <div>
@@ -104,7 +106,11 @@ class Home extends React.Component {
     );
   }
   else {
-    return (<div></div>);
+    return (
+      <div class="spinner-border text-primary" role="status" >
+        <span class="sr-only "></span>
+      </div>
+    );
   }
   }
 
