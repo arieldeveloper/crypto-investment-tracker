@@ -37,6 +37,14 @@ class Home extends React.Component {
     return (
       <div>
         <h3>Hello {this.state.user.name}</h3>
+        <h4>Are You makin bank tho?... let's See!</h4>
+        <ul>
+          <li>Money Spent: {this.state.user.data.valueSpent}</li>
+          <li>Account Worth: {this.state.user.data.totalWorth}</li>
+          <li>ROI: {this.state.user.data.returnValue}</li>
+          <li>Percent ROI: {this.state.user.data.returnPercentage}</li>
+          <li>Damn, someone ain't SQHIT</li>
+        </ul>
         <ul>
         {this.state.user.stocks.map((curr, i) => (
           <li key={i}>
@@ -50,7 +58,7 @@ class Home extends React.Component {
           { curr.coin.name }
         </Link>
       </button>
-          {"  worth: " + curr.coin.value}
+          {"  Amount: " + curr.data.totalCoins + " Currently Worth: " + curr.coin.value + " Percent Return:" + curr.data.returnPercentage}
           <button
           type="submit"
           onClick= {() => this.selectTrade(curr)}>
