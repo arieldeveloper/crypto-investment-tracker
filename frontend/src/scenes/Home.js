@@ -108,6 +108,7 @@ class Home extends React.Component {
     }
     else {
       this.setState({ user: res});
+      console.log(this.state.user.data)
     } 
   }
 

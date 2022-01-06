@@ -4,12 +4,13 @@
  * @param trades a list of trade objects, holding
  */
 
-import { calculateBaseStats } from "./coinService";
-
 
  export function calculatePortfolioStats(holds) {
 
+    console.log("XXXXXXXXXXXXXXXx")
+    console.log(holds)
     let {sum, worth} = sumOfCoins(holds);
+    console.log(sum, worth);
 
     let retPer = (worth - sum) / sum;
     let retVal = worth - sum;
@@ -17,7 +18,6 @@ import { calculateBaseStats } from "./coinService";
     return {
         valueSpent: sum,
         totalWorth: worth,
-        costPerCoin: average,
         returnPercentage: retPer,
         returnValue: retVal,
     }
@@ -29,9 +29,8 @@ function sumOfCoins(holds) {
     let sum = 0;
     let worth = 0;
     for (const hold of holds) {
-        cur = calculateBaseStats(hold);
-        sum += cur.totalValue;
-        worth += cur.totalWorth;
+        sum += hold.data.valueSpent;
+        worth += hold.data.totalWorth;
     }
 
     return {sum, worth};

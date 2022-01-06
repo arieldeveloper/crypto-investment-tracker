@@ -47,7 +47,7 @@ class App extends React.Component {
   }
 
   addUser(username) {
-    let u = new User(username);
+    let u = new User(username, []);
     this.setState({ user: u});
   }
 

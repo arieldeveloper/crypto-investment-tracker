@@ -26,6 +26,7 @@ export default async () => {
         console.log(curHold.coin.name)
         Holds.push(curHold);
     }
+    console.log(Holds)
     return new User(name, Holds);
   } catch {
     console.log(`Failed to make a call to the api to get data for the user logged in`);
