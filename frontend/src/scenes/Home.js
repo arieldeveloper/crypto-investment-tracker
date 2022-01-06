@@ -148,7 +148,7 @@ class Home extends React.Component {
 
   async handleChange(e) {
     this.setState({ text: e.target.value });
-    let res = await TickerSearch(e.target.value);
+    let res = await TickerSearch(e.target.value, true);
     this.setState({ search: res});
   }
 
