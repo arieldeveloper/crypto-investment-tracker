@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import LoginPost from '../api/LoginPost.js';
-
+import {FormField, LoginForm, RowContainer, VerticalContainer} from '../styled-components/Login';
+import { GlobalStyles } from "../GlobalStyles.style";
 export default function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,33 +24,33 @@ export default function Login(props) {
   }
   return (
     <div className="Login">
-      <form onSubmit={handleSubmit}>
+        <GlobalStyles/>
+        <VerticalContainer>
+        <h1>Please Login Here</h1>
+      <LoginForm onSubmit={handleSubmit}>
+          <RowContainer>
           <label>Username</label>
-          <input
-          autoFocus
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          />
+          <FormField value="John" autoFocus value={username} onChange={(e) => setUsername(e.target.value)}/>
+          </RowContainer>
+
+          <RowContainer>
           <label>Password</label>
-          <input
-          autoFocus
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit" >
-          Login
-          </button>
-        <br/>
-        No Account? 
-        <button type="button" >
-            <Link
-          to="/register"
-        >
-          Register
-        </Link>
-          </button>
-      </form>
+          <input autoFocus type="password" value={password}
+                 onChange={(e) => setPassword(e.target.value)}/>
+          </RowContainer>
+
+          <button type="submit">Login</button>
+
+      </LoginForm>
+
+        <RowContainer>
+            <h4> No Account? </h4>
+            <button type="button">
+                Register
+                <Link to="/register"/>
+            </button>`
+        </RowContainer>
+        </VerticalContainer>
     </div>
   );
 }

@@ -7,17 +7,11 @@ import { Link, Navigate } from "react-router-dom";
 import TickerSearch from '../api/TickerSearch.js';
 import UserSearch from '../api/UserSearch.js';
 import LogoutPost from '../api/LogoutPost.js';
-import styled from 'styled-components';
 
-const BigButton = styled.button`
-  color: green;
-  padding: 1em;
-  `;
-
-const BgMain = styled.button`
-  color: red;
-`;
-
+// Stylings
+import { MainButton } from "../styled-components/buttons";
+import { CoinItem } from "../styled-components/list-item";
+import { PortfolioContainer, Container, RowContainer } from "../styled-components/container";
 
 class Home extends React.Component {
 
@@ -46,59 +40,62 @@ class Home extends React.Component {
     if (this.state.user) {
 
     return (
-      <BgMain>
+      <Container backgroundColor="white">
         <h3>Hello {this.state.user.name}</h3>
+        <PortfolioContainer>
+          <form onSubmit={this.handleWish}>
+            <label htmlFor="new-todo">
+              New Coin:
+            </label>
+            <input
+                id="new-todo"
+                onChange={this.handleChange}
+                value={this.state.text}
+            />
+            <ul>
+              {this.state.search.map((c, i) => (
+                  <li key={i}>
+                    {c}
+                    <button
+                        onClick={
+                          this.handleWish}>
+                      Add to Wishlist
+                    </button>
+                    <button
+                        type='button'
+                        onClick={
+                          this.handleBuy}>
+                      Buy
+                    </button>
+                  </li>
+              ))}
+            </ul>
+          </form>
+        </PortfolioContainer>
         <ul>
         {this.state.user.stocks.map((curr, i) => (
-          <li key={i}>
-            <BigButton type="submit" onClick= {() => this.leaveScreen(curr)}>
-              <Link to="/inspect">
+          <CoinItem key={i}>
+            <MainButton type="submit" backgroundColor="#3366ff" onClick= {() => this.leaveScreen(curr)}>
               { curr.coin.name }
+              <Link to="/inspect">
               </Link>
-            </BigButton>
-          {"  worth: " + curr.coin.value}
+            </MainButton>
+          {"  Current Value: " + curr.coin.value}
           <button
           type="submit"
           onClick= {() => this.selectTrade(curr)}>
             New Trade!
           </button>
           <NewTrade stock={curr} endTrade={this.endTrade}/>
-          </li>
+          </CoinItem>
         ))}
       </ul>
-        <form onSubmit={this.handleWish}>
-          <label htmlFor="new-todo">
-            New Coin:
-          </label>
-          <input
-            id="new-todo"
-            onChange={this.handleChange}
-            value={this.state.text}
-          />
-          <ul>
-            {this.state.search.map((c, i) => (
-              <li key={i}>
-                  {c}
-                  <button
-                  onClick={
-                    this.handleWish}>
-                    Add to Wishlist
-                </button>
-                <button
-                type='button'
-                onClick={
-                  this.handleBuy}>
-                    Buy
-                </button>
-              </li>
-            ))}
-            </ul>
-        </form>
+
         <button
           onClick= {this.logout}>
           Logout
         </button>
-      </BgMain>
+      </Container>
     );
   }
   else {
