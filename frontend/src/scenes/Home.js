@@ -7,6 +7,17 @@ import { Link, Navigate } from "react-router-dom";
 import TickerSearch from '../api/TickerSearch.js';
 import UserSearch from '../api/UserSearch.js';
 import LogoutPost from '../api/LogoutPost.js';
+import styled from 'styled-components';
+
+const BigButton = styled.button`
+  color: green;
+  padding: 1em;
+  `;
+
+const BgMain = styled.button`
+  color: red;
+`;
+
 
 class Home extends React.Component {
 
@@ -35,21 +46,16 @@ class Home extends React.Component {
     if (this.state.user) {
 
     return (
-      <div>
+      <BgMain>
         <h3>Hello {this.state.user.name}</h3>
         <ul>
         {this.state.user.stocks.map((curr, i) => (
           <li key={i}>
-            <button
-        type="submit"
-        onClick= {() => this.leaveScreen(curr)}
-      >
-        <Link
-          to="/inspect"
-        >
-          { curr.coin.name }
-        </Link>
-      </button>
+            <BigButton type="submit" onClick= {() => this.leaveScreen(curr)}>
+              <Link to="/inspect">
+              { curr.coin.name }
+              </Link>
+            </BigButton>
           {"  worth: " + curr.coin.value}
           <button
           type="submit"
@@ -92,7 +98,7 @@ class Home extends React.Component {
           onClick= {this.logout}>
           Logout
         </button>
-      </div>
+      </BgMain>
     );
   }
   else {
