@@ -27,14 +27,14 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    // this.userData();
+    this.userData();
   }
 
   render() {
     if (!this.state.loggedIn) {
       return <Navigate to="/"/>
     }
-    if (!this.state.loggedIn) {
+    if (this.state.user) {
 
     return (
       <div>

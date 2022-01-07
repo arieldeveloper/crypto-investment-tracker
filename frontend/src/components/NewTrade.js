@@ -1,5 +1,6 @@
 import React from "react";
 import TradePost from '../api/TradePost.js';
+import holdPost from '../api/holdPost.js';
 import Trade from "../entities/Trade.ts";
 
 class NewTrade extends React.Component {
@@ -24,6 +25,8 @@ class NewTrade extends React.Component {
     e.preventDefault();
     this.props.stock.addTrade(new Trade(this.state.value, this.state.date));
     let res = await TradePost(this.props.stock.coin.name, this.state.value, this.state.date);
+    let res2 = await holdPost(this.props.stock.coin.name, this.state.value, this.state.date);
+    console.log(res2)
     this.props.endTrade(this.props.stock);
     this.setState({value: ''});
     this.setState({date: ''});
