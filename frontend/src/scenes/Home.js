@@ -9,6 +9,8 @@ import UserSearch from '../api/UserSearch.js';
 import LogoutPost from '../api/LogoutPost.js';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../auth.css'
+import * as styled from '../styled-components/homePage';
+import {StatItem} from "../styled-components/homePage";
 
 class Home extends React.Component {
 
@@ -27,55 +29,52 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    // this.userData();
+    this.userData();
   }
 
   render() {
     if (!this.state.loggedIn) {
       return <Navigate to="/"/>
     }
-    if (!this.state.loggedIn) {
+    if (this.state.user) {
 
     return (
       <div>
-        <h3>Hello {this.state.user.name}</h3>
-        <h4>Are You makin bank tho?... let's See!</h4>
-        <ul>
-          <li>Money Spent: {this.state.user.data.valueSpent}</li>
-          <li>Account Worth: {this.state.user.data.totalWorth}</li>
-          <li>ROI: {this.state.user.data.returnValue}</li>
-          <li>Percent ROI: {this.state.user.data.returnPercentage}</li>
-          <li>Damn, someone ain't SQHIT</li>
-        </ul>
+
+        <styled.MainContainer>
+
+          <styled.CentreText>Portfolio Stats</styled.CentreText>
+          <ul>
+            <StatItem>Money Spent: {this.state.user.data.valueSpent}</StatItem>
+            <StatItem>Account Worth: {this.state.user.data.totalWorth}</StatItem>
+            <StatItem>ROI: {this.state.user.data.returnValue}</StatItem>
+            <StatItem>Percent ROI: {this.state.user.data.returnPercentage}</StatItem>
+          </ul>
+
+         <styled.CentreText>Portfolio</styled.CentreText>
+
         <ul>
         {this.state.user.stocks.map((curr, i) => (
-          <li key={i}>
-            <button
-        type="submit"
-        onClick= {() => this.leaveScreen(curr)}
-      >
-        <Link
-          to="/inspect"
-        >
-          { curr.coin.name }
-        </Link>
-      </button>
-          {"  Amount: " + curr.data.totalCoins + " Currently Worth: " + curr.coin.value + " Percent Return:" + curr.data.returnPercentage}
+          <styled.CoinItem key={i}>
+            <styled.Button type="submit" onClick= {() => this.leaveScreen(curr)}>
+              <Link to="/inspect"> { curr.coin.name }</Link>
+            </styled.Button>
+            {"  Amount: " + curr.data.totalCoins + " Currently Worth: " + curr.coin.value + " Percent Return:" + curr.data.returnPercentage}
           <button
           type="submit"
           onClick= {() => this.selectTrade(curr)}>
             New Trade!
           </button>
           <NewTrade stock={curr} endTrade={this.endTrade}/>
-          </li>
+          </styled.CoinItem>
         ))}
       </ul>
+
+
         <form onSubmit={this.handleWish}>
-          <label htmlFor="new-todo">
-            New Coin:
-          </label>
           <input
             id="new-todo"
+            placeholder="Add new coin"
             onChange={this.handleChange}
             value={this.state.text}
           />
@@ -83,25 +82,22 @@ class Home extends React.Component {
             {this.state.search.map((c, i) => (
               <li key={i}>
                   {c}
-                  <button
-                  onClick={
-                    this.handleWish}>
-                    Add to Wishlist
-                </button>
-                <button
-                type='button'
-                onClick={
-                  this.handleBuy}>
-                    Buy
-                </button>
+                <button type='button' onClick={this.handleBuy}>Buy</button>
               </li>
             ))}
             </ul>
         </form>
-        <button
-          onClick= {this.logout}>
-          Logout
-        </button>
+          <styled.VerticalContainer>
+            <text>Hello {this.state.user.name}</text>
+            <button
+                onClick= {this.logout}>
+              Logout
+            </button>
+          </styled.VerticalContainer>
+        </styled.MainContainer>
+
+
+
       </div>
     );
   }

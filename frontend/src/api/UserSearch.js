@@ -9,8 +9,7 @@ import CoinSearch from "./CoinSearch";
  * @param searchString representing a searched ticker symbol
  */
 export default async () => {
-  // TODO: need to make an api call to the backend, where we will have the external api call
-  
+
   let nameUrl = '/api/users/info/';
   let coinUrl = '/api/portfolio/coins/';
 

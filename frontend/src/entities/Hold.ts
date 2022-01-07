@@ -18,7 +18,6 @@ export default class Hold {
     }
 
     setData(){
-      
       let updatedData = calculateBaseStats(this.trades, this.coin)
       this.data = updatedData;
     }
