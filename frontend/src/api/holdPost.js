@@ -23,11 +23,11 @@ export default async (coin, amount, spent) => {
   return axios.post(checkUrl, checkRequirements).then((response) => {
     try {
         if (response.data == true) {
-            console.log(response)
-            return newRow()
+          console.log(response.data);
+            return newRow();
         }
         else {
-            console.log(response);
+          console.log(response.data);
             return updateRow();
         }
     } catch {
@@ -39,7 +39,6 @@ export default async (coin, amount, spent) => {
   async function newRow() {
     return axios.post(newUrl, fullRequirements).then((response) => {
         try {
-            console.log(response);
           return response;
         } catch {
           console.log(`Failed to make a call to the api to create new hold ${coin}`);
@@ -51,7 +50,6 @@ export default async (coin, amount, spent) => {
   async function updateRow() {
     return axios.post(updateUrl, fullRequirements).then((response) => {
         try {
-            console.log(response);
           return response;
         } catch {
           console.log(`Trying to make a call to the api to update a hold ${coin}`);

@@ -9,7 +9,7 @@
 
     let {sum, worth} = sumOfCoins(holds);
 
-    let retPer = (worth - sum) / sum;
+    let retPer = 100 * (worth - sum) / sum;
     let retVal = worth - sum;
 
     return {
@@ -26,8 +26,8 @@ function sumOfCoins(holds) {
     let sum = 0;
     let worth = 0;
     for (const hold of holds) {
-        sum += hold.data.valueSpent;
-        worth += hold.data.totalWorth;
+        sum += hold.spent;
+        worth += hold.amount * hold.coin.value;
     }
 
     return {sum, worth};

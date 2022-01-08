@@ -162,7 +162,9 @@ router.use(express.json());
                     throw err;
                 }
                 if (results.rows.length > 0) {
+                    console.log(results.rows)
                     res.send(results.rows);
+                    
                 }
             });
     } else {

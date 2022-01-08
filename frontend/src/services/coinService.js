@@ -4,20 +4,18 @@
  * @param trades a list of trade objects, holding
  */
 
-export function calculateBaseStats(trades, coin) {
+export function calculateBaseStats(hold) {
 
-    let worth = coin.value;
-
-    let {average, sum, coinAmount} = sumOfTrades(trades);
-
-    let totalWorth = worth * coinAmount;
-    let retPer = (worth - average) / average;
-    let retVal = retPer * sum;
-    let retCoin = retPer * average
+    console.log(hold)
+    let spent = parseFloat(hold.spent);
+    let amount = parseFloat(hold.amount)
+    let average = spent / amount;
+    let totalWorth = amount * hold.coin.value;
+    let retVal = totalWorth - spent;
+    let retPer = 100 * retVal / spent;
+    let retCoin = retVal / amount;
 
     let data = {
-        valueSpent: sum,
-        totalCoins: coinAmount,
         costPerCoin: average,
         totalWorth: totalWorth,
         returnPercentage: retPer,
@@ -27,25 +25,6 @@ export function calculateBaseStats(trades, coin) {
 
     return data
 
-}
-
-function sumOfTrades(trades) {
-    let sum = 0;
-    let coinAmount = 0;
-    for (const trade of trades) {
-        sum += trade.value * trade.amount;
-        coinAmount += trade.amount;
-    }
-    let average = sum / coinAmount;
-    return {average, sum, coinAmount};
-}
-
-export function calculateGrowthPercentage(trades) {
-    const first = trades[0];
-    const last = trades[trades.length];
-
-    // Formula : sell price - buy price, divide by buy price and then multiply by 100.
-    return (((last - first) / first) * 100);
 }
 
 

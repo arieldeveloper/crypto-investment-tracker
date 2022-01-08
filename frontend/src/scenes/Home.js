@@ -41,10 +41,10 @@ class Home extends React.Component {
         <h3>Hello {this.state.user.name}</h3>
         <h4>Are You makin bank tho?... let's See!</h4>
         <ul>
-          <li>Money Spent: {this.state.user.data.valueSpent}</li>
-          <li>Account Worth: {this.state.user.data.totalWorth}</li>
-          <li>ROI: {this.state.user.data.returnValue}</li>
-          <li>Percent ROI: {this.state.user.data.returnPercentage}</li>
+          <li>Money Spent: ${this.state.user.data.valueSpent.toFixed(2)}</li>
+          <li>Account Worth: ${this.state.user.data.totalWorth.toFixed(2)}</li>
+          <li>ROI: ${this.state.user.data.returnValue.toFixed(2)}</li>
+          <li>Percent ROI: {this.state.user.data.returnPercentage}%</li>
           <li>Damn, someone ain't SQHIT</li>
         </ul>
         <ul>
@@ -57,10 +57,10 @@ class Home extends React.Component {
         <Link
           to="/inspect"
         >
-          { curr.coin.name }
+          { curr.coin.name + " -- " + curr.coin.value.toFixed(2)}
         </Link>
       </button>
-          {"  Amount: " + curr.data.totalCoins + " Currently Worth: " + curr.coin.value + " Percent Return:" + curr.data.returnPercentage}
+          {"  You own: " + curr.amount.toFixed(2) + " and have spent: $" + curr.spent.toFixed(2)}
           <button
           type="submit"
           onClick= {() => this.selectTrade(curr)}>
@@ -131,7 +131,7 @@ class Home extends React.Component {
 
   updateCurrencies() {
     let coino = new Coin(this.state.text, 0);
-    let holdo = new Hold(coino, []);
+    let holdo = new Hold(coino, [], 0, 0);
     this.setState({ text: '' });
     return holdo;
   }

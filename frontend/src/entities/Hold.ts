@@ -8,24 +8,31 @@ export default class Hold {
     trades: Array<Trade>;
     selected: Boolean;
     data: object;
+    amount: number;
+    spent: number;
 
   
-    constructor(coin: Coin, trades: Array<Trade>) {
+    constructor(coin: Coin, trades: Array<Trade>, amount: number, spent: number) {
       this.coin = coin;
       this.selected = false;
       this.trades = trades;
-      this.data = calculateBaseStats(trades, coin);
+      this.data = null;
+      this.amount = amount;
+      this.spent = spent;
     }
 
-    setData(){
-      
-      let updatedData = calculateBaseStats(this.trades, this.coin)
+    setData(amount: number, spent: number){
+      this.amount = amount;
+      this.spent = spent;
+      let updatedData = calculateBaseStats(this);
       this.data = updatedData;
     }
 
     addTrade(trade: Trade) {
       this.trades.push(trade);
-      this.setData();
+      this.amount += trade.amount;
+      this.spent += trade.amount * trade.value;
+
     }
 
     select() {
