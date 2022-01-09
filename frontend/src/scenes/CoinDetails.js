@@ -42,7 +42,7 @@ class CoinDetails extends React.Component {
     if (this.state.hold) {
       return (
         <div>
-        <h1>{this.state.hold.coin.name.toFixed(2)} -- {this.state.hold.coin.value.toFixed(2)}</h1>
+        <h1>{this.state.hold.coin.name} -- {this.state.hold.coin.value}</h1>
         <h2>{"  You own: " + this.state.hold.amount.toFixed(2) + " and have spent: $" + this.state.hold.spent.toFixed(2)}</h2>
         <ul>
           <li>Account Worth: ${this.state.hold.data.totalWorth.toFixed(2)}</li>

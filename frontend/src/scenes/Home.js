@@ -57,7 +57,7 @@ class Home extends React.Component {
         <Link
           to="/inspect"
         >
-          { curr.coin.name + " -- " + curr.coin.value.toFixed(2)}
+          { curr.coin.name + " -- " + curr.coin.value}
         </Link>
       </button>
           {"  You own: " + curr.amount.toFixed(2) + " and have spent: $" + curr.spent.toFixed(2)}
