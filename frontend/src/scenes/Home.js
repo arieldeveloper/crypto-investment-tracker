@@ -23,32 +23,35 @@ class Home extends React.Component {
     this.leaveScreen = this.leaveScreen.bind(this);
     this.userData = this.userData.bind(this);
     this.updateCurrencies = this.updateCurrencies.bind(this);
-    this.state = {text: '', inTrade: false, search: [], user: null, loggedIn: true };
+    this.state = {text: '', inTrade: false, search: [], search_val: null, loggedIn: true };
   }
 
   componentDidMount() {
-    this.userData();
+    if (!this.props.user) {
+      console.log('yeet')
+      this.userData();
+    } 
   }
 
   render() {
     if (!this.state.loggedIn) {
       return <Navigate to="/"/>
     }
-    if (this.state.user) {
+    if (this.props.user) {
 
     return (
       <div>
-        <h3>Hello {this.state.user.name}</h3>
+        <h3>Hello {this.props.user.name}</h3>
         <h4>Are You makin bank tho?... let's See!</h4>
         <ul>
-          <li>Money Spent: ${this.state.user.data.valueSpent.toFixed(2)}</li>
-          <li>Account Worth: ${this.state.user.data.totalWorth.toFixed(2)}</li>
-          <li>ROI: ${this.state.user.data.returnValue.toFixed(2)}</li>
-          <li>Percent ROI: {this.state.user.data.returnPercentage}%</li>
+          <li>Money Spent: ${this.props.user.data.valueSpent.toFixed(2)}</li>
+          <li>Account Worth: ${this.props.user.data.totalWorth.toFixed(2)}</li>
+          <li>ROI: ${this.props.user.data.returnValue.toFixed(2)}</li>
+          <li>Percent ROI: {this.props.user.data.returnPercentage}%</li>
           <li>Damn, someone ain't SQHIT</li>
         </ul>
         <ul>
-        {this.state.user.stocks.map((curr, i) => (
+        {this.props.user.stocks.map((curr, i) => (
           <li key={i}>
             <button
         type="submit"
@@ -120,7 +123,7 @@ class Home extends React.Component {
       this.setState({loggedIn: false});
     }
     else {
-      this.setState({ user: res});
+      this.props.addUser(res);
     } 
   }
 
@@ -130,7 +133,7 @@ class Home extends React.Component {
   }
 
   updateCurrencies() {
-    let coino = new Coin(this.state.text, 0);
+    let coino = new Coin(this.state.text, this.state.search_val);
     let holdo = new Hold(coino, [], 0, 0);
     this.setState({ text: '' });
     return holdo;
@@ -143,7 +146,7 @@ class Home extends React.Component {
         return;
       }
       let hold = this.updateCurrencies();
-      this.state.user.addHold(hold);
+      this.props.addHoldHome(hold);
     }
   }
 
@@ -154,7 +157,7 @@ class Home extends React.Component {
         return;
       }
       let hold = this.updateCurrencies();
-      this.state.user.addHold(hold);
+      this.props.addHoldHome(hold);
       this.selectTrade(hold);
     }
   }
@@ -162,7 +165,9 @@ class Home extends React.Component {
   async handleChange(e) {
     this.setState({ text: e.target.value });
     let res = await TickerSearch(e.target.value, true);
-    this.setState({ search: res});
+    this.setState({ search: res[0][0]});
+    this.setState({ search_val: res[0][1]});
+    console.log(res)
   }
 
   selectTrade(curr) {

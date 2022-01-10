@@ -32,7 +32,12 @@ export default class Hold {
       this.trades.push(trade);
       this.amount += trade.amount;
       this.spent += trade.amount * trade.value;
+    }
 
+    addTrades(trades: Array<Trade>) {
+      for (const trade of trades) {
+        this.trades.push(trade);
+      }
     }
 
     select() {

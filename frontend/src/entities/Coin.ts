@@ -8,4 +8,8 @@ export default class Coin {
       this.value = value;
     }
 
+    changeValue(val: number) {
+      this.value = val;
+    }
+
 }

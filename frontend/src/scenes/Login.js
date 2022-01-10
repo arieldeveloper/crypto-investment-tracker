@@ -14,7 +14,7 @@ export default function Login(props) {
     event.preventDefault();
     let res = await LoginPost(username, password);
       if (res === 'success') {
-        props.login(username);
+        props.login();
         setloggedIn(true);
       }
   }
@@ -24,35 +24,6 @@ export default function Login(props) {
   }
   return (
     <div className="Login">
-      {/* <form onSubmit={handleSubmit}>
-          <label>Username</label>
-          <input
-          autoFocus
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          />
-          <label>Password</label>
-          <input
-          autoFocus
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit" >
-          Login
-          </button>
-        <br/>
-        No Account? 
-        <button type="button" >
-            <Link
-          to="/register"
-        >
-          Register
-        </Link>
-          </button>
-      </form> */}
-
-
       <div class="container">
     <div class="row">
       <div class="col-md-6 offset-md-3">

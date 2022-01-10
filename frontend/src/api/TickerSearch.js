@@ -17,7 +17,7 @@ export default async (searchString, show) => {
       return [create_name(response)];
     } catch {
       console.log(`Trying to make a call to the api to search for ${searchString}`);
-      return [];
+      return [[], null];
     }
   })
   
@@ -30,7 +30,7 @@ export default async (searchString, show) => {
     let nam = data.data.data[searchString].name;
     let tkr = searchString;
     let val = data.data.data[searchString].quote.USD.price;
-    return String(nam + " - " + tkr + ": " + String(val));
+    return [[String(nam + " - " + tkr + ": " + String(val))], val];
     }
     return data.data.data[searchString].quote.USD.price;
   }

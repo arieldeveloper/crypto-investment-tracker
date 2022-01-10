@@ -19,9 +19,7 @@ export default async (coin) => {
   let trades = await tradeSearch();
   
   let price = await TickerSearch(data[0].coin, false);
-    let coino = new Coin(data[0].coin, price);
-    let holdo = new Hold(coino, trades);
-    return holdo;
+  return [trades, price]
 
   async function tradeSearch() {
     return axios.post(coinUrl, requirements).then((response) => {
