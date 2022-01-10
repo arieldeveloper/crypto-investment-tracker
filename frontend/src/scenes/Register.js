@@ -17,40 +17,6 @@ export default function Register(props) {
 
   return (
     <div className="Login">
-      {/* <form onSubmit={handleSubmit}>
-          <label>Email</label>
-          <input
-          type="email"
-          autoFocus
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          />
-          <label>Username</label>
-          <input
-          autoFocus
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          />
-          <label>Password</label>
-          <input
-          autoFocus
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit" >
-          Register
-          </button> <br></br>
-          <button type="button" >
-            <Link
-          to="/"
-        >
-          Go login!
-        </Link>
-          </button>
-      </form> */}
-
-
       <div class="container">
     <div class="row">
       <div class="col-md-6 offset-md-3">
@@ -79,7 +45,7 @@ export default function Register(props) {
               <input type="password" class="form-control" id="password" placeholder="Repeat Password"
               value={password2} onChange={(e) => setPassword2(e.target.value)}></input>
             </div>
-            <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">Login</button></div>
+            <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">Register</button></div>
             <div id="emailHelp" class="form-text text-center mb-5 text-dark">Already have an Account? 
              <Link to="/" class="text-dark fw-bold" href="#"> Go Login</Link>
             </div>

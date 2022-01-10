@@ -7,6 +7,7 @@ import { Link, Navigate } from "react-router-dom";
 import TickerSearch from '../api/TickerSearch.js';
 import UserSearch from '../api/UserSearch.js';
 import LogoutPost from '../api/LogoutPost.js';
+import { newTkr, newTkrs } from '../services/tkrService';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../auth.css'
 
@@ -23,6 +24,7 @@ class Home extends React.Component {
     this.leaveScreen = this.leaveScreen.bind(this);
     this.userData = this.userData.bind(this);
     this.updateCurrencies = this.updateCurrencies.bind(this);
+    this.updateTkrs = this.updateTkrs.bind(this);
     this.state = {text: '', inTrade: false, search: [], search_val: null, loggedIn: true };
   }
 
@@ -101,6 +103,9 @@ class Home extends React.Component {
             ))}
             </ul>
         </form>
+        <button onClick={this.updateTkrs}>
+          Update Stock Worths
+        </button><br></br>
         <button
           onClick= {this.logout}>
           Logout
@@ -190,6 +195,11 @@ class Home extends React.Component {
   leaveScreen(curr) {
     this.setState({ inTrade: false });
     this.props.choose(curr);
+  }
+
+  async updateTkrs() {
+    this.props.user.stocks = await newTkrs(this.props.user.stocks);
+    this.setState({});
   }
 
 }

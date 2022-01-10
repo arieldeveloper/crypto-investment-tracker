@@ -2,6 +2,7 @@ import React from "react";
 import NewTrade from "../components/NewTrade"
 import { Link } from "react-router-dom";
 import CoinSearch from '../api/CoinSearch.js';
+import { newTkr, newTkrs } from '../services/tkrService';
 
 class CoinDetails extends React.Component {
   
@@ -10,22 +11,25 @@ class CoinDetails extends React.Component {
     this.endTrade = this.endTrade.bind(this);
     this.leaveScreen = this.leaveScreen.bind(this);
     this.coinData = this.coinData.bind(this);
+    this.updateTkrs = this.updateTkrs.bind(this);
     this.state = {loaded: false};
   }
 
   componentDidMount() {
-    this.coinData();
-    
+    if (this.props.hold.trades.length == 0){
+      this.coinData();
+    }
+    else {
+      this.setState({loaded: true});
+    }
   }
 
   async coinData() {
     let res = await CoinSearch(this.props.hold.coin.name);
-    console.log(res)
     this.props.hold.coin.changeValue(res[1])
     this.props.hold.addTrades(res[0])
     this.props.hold.select();
     this.props.hold.setData(this.props.hold.amount, this.props.hold.spent);
-    console.log(this.props.hold);
     this.setState({loaded: true})
   }
 
@@ -40,6 +44,11 @@ class CoinDetails extends React.Component {
 
   calculate(trad) {
     return trad.value * trad.amount;
+  }
+
+  async updateTkrs() {
+    await newTkr(this.props.hold);
+    this.setState({});
   }
 
   render() {
@@ -63,7 +72,10 @@ class CoinDetails extends React.Component {
             </li>
           ))}
         </ul>
-        <NewTrade stock={this.props.hold} endTrade={this.endTrade}/>
+        <NewTrade stock={this.props.hold} endTrade={this.endTrade}/><br></br>
+        <button onClick={this.updateTkrs}>
+          Update Stock Worths
+        </button><br></br>
         <button type="submit"
         onClick= {() => this.leaveScreen()}
       >
