@@ -59,7 +59,7 @@ class CoinDetails extends React.Component {
         <ul>
         {this.props.hold.trades.map((curr, i) => (
             <li key={i}>
-            {"Bought " + curr.amount.toFixed(2) + " at $" + curr.value.toFixed(2) + " spending in total $" + this.calculate(curr).toFixed(2)}
+            {"Bought " + curr.value.toFixed(2) + " at $" + curr.amount.toFixed(2) + " spending in total $" + this.calculate(curr).toFixed(2)}
             </li>
           ))}
         </ul>

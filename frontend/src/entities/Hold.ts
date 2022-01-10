@@ -35,6 +35,7 @@ export default class Hold {
     }
 
     addTrades(trades: Array<Trade>) {
+      this.trades = [];
       for (const trade of trades) {
         this.trades.push(trade);
       }

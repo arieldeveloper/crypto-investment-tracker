@@ -130,6 +130,7 @@ class Home extends React.Component {
   async logout() {
     LogoutPost();
     this.setState({loggedIn: false});
+    this.props.logout();
   }
 
   updateCurrencies() {
