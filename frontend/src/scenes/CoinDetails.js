@@ -16,7 +16,7 @@ class CoinDetails extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.hold.trades.length == 0){
+    if (this.props.hold.trades.length == 0 && !this.state.loaded){
       this.coinData();
     }
     else {
@@ -25,7 +25,10 @@ class CoinDetails extends React.Component {
   }
 
   async coinData() {
+    console.log("Did I even get here")
+    console.log(this.props.hold)
     let res = await CoinSearch(this.props.hold.coin.name);
+    console.log("Searched")
     this.props.hold.coin.changeValue(res[1])
     this.props.hold.addTrades(res[0])
     this.props.hold.select();

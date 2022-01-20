@@ -33,20 +33,21 @@ router.use(express.json());
         let errors = [];
 
         // check for missing fields
-        if (!coin || !amount || !spent) {
-            console.log(coin);
-            console.log(amount);
-            console.log(spent);
+        if ((!coin || !amount || !spent ) && (spent != 0 || amount != 0) ) {
+            console.log("yeet " + coin);
+            console.log("yeet" + amount);
+            console.log("yeet" + spent);
             errors.push({message: "Please enter all of the fields"});
         }
 
         // check for password length
-        if (amount <= 0 || spent <= 0) {
+        if (amount < 0 || spent < 0) {
             errors.push({message: "The amount and price needs to be a positive number"});
         }
 
         if (errors.length > 0) {
             // not validated
+            console.log(errors);
             res.send(errors);
         } else {
             // validated
@@ -56,6 +57,7 @@ router.use(express.json());
             // Make a query to insert the values into the database
             pool.query(text, values, (err, results) => {
                 if (err) {
+                    console.log('other error')
                     throw err;
                 }
                 console.log('created');

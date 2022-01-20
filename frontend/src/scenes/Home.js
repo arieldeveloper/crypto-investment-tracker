@@ -2,12 +2,13 @@ import '../App.css';
 import React from 'react';
 import Hold  from "../entities/Hold.ts"
 import Coin from "../entities/Coin.ts"
-import NewTrade from "../components/NewTrade"
+import { Table } from 'react-bootstrap'
 import { Link, Navigate } from "react-router-dom";
 import TickerSearch from '../api/TickerSearch.js';
 import UserSearch from '../api/UserSearch.js';
 import LogoutPost from '../api/LogoutPost.js';
-import { newTkr, newTkrs } from '../services/tkrService';
+import holdPost from '../api/holdPost.js';
+import { newTkrs } from '../services/tkrService';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../auth.css'
 
@@ -15,7 +16,6 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
-    this.handleWish = this.handleWish.bind(this);
     this.logout = this.logout.bind(this);
     this.handleBuy = this.handleBuy.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -35,6 +35,10 @@ class Home extends React.Component {
     } 
   }
 
+  calculate(trad) {
+    return trad.coin.value * trad.amount;
+  }
+
   render() {
     if (!this.state.loggedIn) {
       return <Navigate to="/"/>
@@ -43,8 +47,8 @@ class Home extends React.Component {
 
     return (
       <div>
-        <h3>Hello {this.props.user.name}</h3>
-        <h4>Are You makin bank tho?... let's See!</h4>
+        <h4><div class="d-flex justify-content-end"> {this.props.user.name}</div></h4>
+        <h1><div class="d-flex justify-content-center">Crypto Paper Trader</div></h1>
         <ul>
           <li>Money Spent: ${this.props.user.data.valueSpent.toFixed(2)}</li>
           <li>Account Worth: ${this.props.user.data.totalWorth.toFixed(2)}</li>
@@ -52,30 +56,58 @@ class Home extends React.Component {
           <li>Percent ROI: {this.props.user.data.returnPercentage}%</li>
           <li>Damn, someone ain't SQHIT</li>
         </ul>
-        <ul>
-        {this.props.user.stocks.map((curr, i) => (
-          <li key={i}>
-            <button
-        type="submit"
-        onClick= {() => this.leaveScreen(curr)}
-      >
-        <Link
-          to="/inspect"
-        >
-          { curr.coin.name + " -- " + curr.coin.value}
-        </Link>
-      </button>
-          {"  You own: " + curr.amount.toFixed(2) + " and have spent: $" + curr.spent.toFixed(2)}
-          <button
-          type="submit"
-          onClick= {() => this.selectTrade(curr)}>
-            New Trade!
-          </button>
-          <NewTrade stock={curr} endTrade={this.endTrade}/>
-          </li>
-        ))}
-      </ul>
-        <form onSubmit={this.handleWish}>
+        <Table  hover variant="info">
+        <tbody >
+          <tr>
+            <td class="blue">Coin</td>
+            <td class="blue">Worth</td>
+            <td class="blue">Owned</td>
+            <td class="blue">Spent</td>
+            <td class="blue">Value</td>
+          </tr>
+          
+            {
+              this.props.user.stocks.map((curr, i) => (
+                this.calculate(curr) > curr.spent ? 
+                <tr key={i}>
+                 <td><button
+              type="submit"
+              onClick= {() => this.leaveScreen(curr)}
+            >
+              <Link
+                to="/inspect"
+              >
+                { curr.coin.name }
+              </Link>
+            </button></td>
+            <td>{ parseFloat(curr.coin.value).toFixed(2) }</td>
+            <td>{ curr.amount.toFixed(2) }</td>
+            <td>{ curr.spent.toFixed(2) }</td>
+            <td class='green'>{ this.calculate(curr).toFixed(2) }</td>
+             </tr> :
+
+            <tr key={i}>
+            <td><button
+            type="submit"
+            onClick= {() => this.leaveScreen(curr)}
+            >
+            <Link
+            to="/inspect"
+            >
+            { curr.coin.name }
+            </Link>
+            </button></td>
+            <td>{ parseFloat(curr.coin.value).toFixed(2) }</td>
+            <td>{ curr.amount.toFixed(2) }</td>
+            <td>{ curr.spent.toFixed(2) }</td>
+            <td  class='red'>{ this.calculate(curr).toFixed(2) }</td>
+            </tr>
+                
+                ))
+            }
+        </tbody>
+      </Table>
+        <form onSubmit={this.handleBuy}>
           <label htmlFor="new-todo">
             New Coin:
           </label>
@@ -87,12 +119,7 @@ class Home extends React.Component {
           <ul>
             {this.state.search.map((c, i) => (
               <li key={i}>
-                  {c}
-                  <button
-                  onClick={
-                    this.handleWish}>
-                    Add to Wishlist
-                </button>
+                {c}
                 <button
                 type='button'
                 onClick={
@@ -129,6 +156,7 @@ class Home extends React.Component {
     }
     else {
       this.props.addUser(res);
+      console.log(res)
     } 
   }
 
@@ -145,7 +173,7 @@ class Home extends React.Component {
     return holdo;
   }
 
-  handleWish(e) {
+  async handleBuy(e) {
     e.preventDefault();
     if  (!this.state.inTrade) {
       if (this.state.text.length === 0) {
@@ -153,18 +181,7 @@ class Home extends React.Component {
       }
       let hold = this.updateCurrencies();
       this.props.addHoldHome(hold);
-    }
-  }
-
-  handleBuy(e) {
-    e.preventDefault();
-    if  (!this.state.inTrade) {
-      if (this.state.text.length === 0) {
-        return;
-      }
-      let hold = this.updateCurrencies();
-      this.props.addHoldHome(hold);
-      this.selectTrade(hold);
+      let res2 = await holdPost(hold.coin.name, 0, 0);
     }
   }
 

@@ -131,7 +131,7 @@ router.post('/coin',(req, res) => {
                     if (err) {
                         throw err;
                     }
-                    if (results.rows.length > 0) {
+                    if (results.rows.length >= 0) {
                         console.log(results.rows);
                         res.send(results.rows);
                     }

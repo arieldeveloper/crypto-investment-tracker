@@ -16,9 +16,12 @@ export default async (coin) => {
       coin: coin
   }
   let data = [];
+  console.log('yhyhuhuh')
   let trades = await tradeSearch();
+  console.log('uhuh')
   
-  let price = await TickerSearch(data[0].coin, false);
+  let price = await TickerSearch(requirements.coin, false);
+  console.log('nnuhuh')
   return [trades, price]
 
   async function tradeSearch() {

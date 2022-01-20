@@ -19,3 +19,19 @@
   a{
     text-decoration: none;
   }
+
+  body{
+    background: rgb(110, 132, 231);
+  }
+
+  .blue{
+    color: blue;
+  }
+
+  .green{
+    color: green;
+  }
+
+  .red {
+    color: red;
+  }
