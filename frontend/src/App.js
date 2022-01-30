@@ -62,7 +62,7 @@ class App extends React.Component {
           <Route path="/register" element={<Register/>} />
           <Route path="/" element={<Login login={this.login} choose={this.choose}/>} />
           <Route path="/home" element={<Home choose={this.choose} login={this.login} logout={this.logout} addUser={this.addUser} addHoldHome={this.addHoldHome} user={this.state.user}/>} />
-          <Route path="/inspect" element={<CoinDetails hold={this.state.choice} remove={this.remove}/>} />
+          <Route path="/inspect" element={<CoinDetails hold={this.state.choice} remove={this.remove} user={this.state.user}/>} />
           </Routes>
       </BrowserRouter>
     );

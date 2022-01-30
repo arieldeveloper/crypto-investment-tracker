@@ -25,6 +25,7 @@ export default async () => {
         let curHold = new Hold(curCoin, [], parseFloat(coinlist[i].amount), parseFloat(coinlist[i].spent))
         Holds.push(curHold);
     }
+    console.log("making user")
     return new User(name, Holds);
   } catch {
     console.log(`Failed to make a call to the api to get data for the user logged in`);
@@ -42,8 +43,9 @@ export default async () => {
     )}
 
    async function getCoins() {
+      console.log("beginning coin journey")
         return axios.get(coinUrl).then((response) => {
-
+            console.log("in journey")
             try {
                 return response.data;
             } catch {

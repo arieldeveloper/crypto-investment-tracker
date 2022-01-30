@@ -3,6 +3,9 @@ import NewTrade from "../components/NewTrade"
 import { Link } from "react-router-dom";
 import CoinSearch from '../api/CoinSearch.js';
 import { newTkr, newTkrs } from '../services/tkrService';
+import { Table } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import '../auth.css'
 
 class CoinDetails extends React.Component {
   
@@ -49,8 +52,21 @@ class CoinDetails extends React.Component {
     return trad.value * trad.amount;
   }
 
+  calcRet(trad) {
+    let dif = this.props.hold.coin.value - trad.amount;
+    let total = dif * trad.value;
+    return total;
+  }
+
+  calcRetPer(trad) {
+    let dif = this.props.hold.coin.value - trad.amount;
+    let div = dif / trad.amount;
+    return div;
+  }
+
   async updateTkrs() {
     await newTkr(this.props.hold);
+    this.props.user.updateData();
     this.setState({});
   }
 
@@ -58,23 +74,71 @@ class CoinDetails extends React.Component {
     if (this.state.loaded) {
       return (
         <div>
-        <h1>{this.props.hold.coin.name} -- {this.props.hold.coin.value}</h1>
-        <h2>{"  You own: " + this.props.hold.amount.toFixed(2) + " and have spent: $" + this.props.hold.spent.toFixed(2)}</h2>
-        <ul>
-          <li>Account Worth: ${this.props.hold.data.totalWorth.toFixed(2)}</li>
-          <li>ROI: ${this.props.hold.data.returnValue.toFixed(2)}</li>
-          <li>Percent ROI: {this.props.hold.data.returnPercentage.toFixed(0)}%</li>
-          <li>Average Cost Per Coin: {this.props.hold.data.costPerCoin.toFixed(2)}</li>
-          <li>ROI Per Coin: {this.props.hold.data.returnPerCoin.toFixed(2)}</li>
-          <li>Damn, someone ain't SQHIT</li>
-        </ul>
-        <ul>
-        {this.props.hold.trades.map((curr, i) => (
-            <li key={i}>
-            {"Bought " + curr.value.toFixed(2) + " at $" + curr.amount.toFixed(2) + " spending in total $" + this.calculate(curr).toFixed(2)}
-            </li>
-          ))}
-        </ul>
+        <h4>
+          <div class="position-absolute top-0 end-0"> {this.props.user.name}</div>
+          <div class="position-absolute top-0 start-0">Crypto Paper Trader</div>
+        </h4>
+        <h1><div class="d-flex justify-content-center title-marg">{this.props.hold.coin.name}</div></h1>
+        <div class="mt-5 text-center d-flex justify-content-between align-items-center mt-4 px-4">
+          <div class="stat">
+                <h5 class="mb-0">Owned</h5> <span>{this.props.hold.amount.toFixed(2)}</span>
+            </div>
+            <div class="stat">
+                <h5 class="mb-0">Currently Worth</h5> <span>${parseFloat(this.props.hold.coin.value).toFixed(2)}</span>
+            </div>
+            <div class="stat">
+                <h5 class="mb-0">Average Purchase Cost</h5> <span>${this.props.hold.data.costPerCoin.toFixed(2)}</span>
+            </div>
+            <div class="stat">
+                <h5 class="mb-0">Invested</h5> <span>${this.props.hold.spent.toFixed(2)}</span>
+            </div>
+            <div class="stat">
+                <h5 class="mb-0">Value</h5> <span>${this.props.hold.data.totalWorth.toFixed(2)}</span>
+            </div>
+            <div class="stat">
+                <h5 class="mb-0">Return On Investemt</h5> <span>${this.props.hold.data.returnValue.toFixed(2)}</span>
+            </div>
+            <div class="stat">
+                <h5 class="mb-0">Percent ROI</h5> <span>{parseFloat(this.props.user.data.returnPercentage).toFixed(2)}%</span>
+            </div>
+        </div>
+        <div class="table-marg">
+        <Table hover variant="info" class="w-auto">
+          <thead>
+            <tr>
+              <th class="blue">Amount</th>
+              <th class="blue">Spent</th>
+              <th class="blue">Worth</th>
+              <th class="blue">ROI</th>
+              <th class="blue">Percent ROI</th>
+            </tr>
+            </thead>
+            <tbody>
+              {
+                this.props.hold.trades.map((curr, i) => (
+                  this.props.hold.coin.value > curr.amount ?
+                  <tr key={i}>
+              <td>{ curr.value.toFixed(2) }</td>
+              <td>{ this.calculate(curr).toFixed(2) }</td>
+              <td>{ curr.amount.toFixed(2) }</td>
+               
+              <td class='green'>{ this.calcRet(curr).toFixed(2) }</td>
+              <td class='green'>{ this.calcRetPer(curr).toFixed(2) }</td>
+              </tr> :
+              <tr key={i}>
+              <td>{ curr.value.toFixed(2) }</td>
+              <td>{ this.calculate(curr).toFixed(2) }</td>
+              <td>{ curr.amount.toFixed(2) }</td>
+               
+              <td class='red'>{ this.calcRet(curr).toFixed(2) }</td>
+              <td class='red'>{ this.calcRetPer(curr).toFixed(2) }</td>
+              </tr>
+                  
+                  ))
+              }
+          </tbody>
+        </Table>
+        </div>
         <NewTrade stock={this.props.hold} endTrade={this.endTrade}/><br></br>
         <button onClick={this.updateTkrs}>
           Update Stock Worths

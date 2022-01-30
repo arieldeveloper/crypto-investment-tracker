@@ -49,23 +49,34 @@ class Home extends React.Component {
       <div>
         <h4><div class="d-flex justify-content-end"> {this.props.user.name}</div></h4>
         <h1><div class="d-flex justify-content-center">Crypto Paper Trader</div></h1>
-        <ul>
-          <li>Money Spent: ${this.props.user.data.valueSpent.toFixed(2)}</li>
-          <li>Account Worth: ${this.props.user.data.totalWorth.toFixed(2)}</li>
-          <li>ROI: ${this.props.user.data.returnValue.toFixed(2)}</li>
-          <li>Percent ROI: {this.props.user.data.returnPercentage}%</li>
-          <li>Damn, someone ain't SQHIT</li>
-        </ul>
-        <Table  hover variant="info">
-        <tbody >
+        <div class="mt-5 text-center d-flex justify-content-between align-items-center mt-4 px-4">
+            <div class="stats"></div>
+            <div class="stats">
+                <h5 class="mb-0">Total Invested</h5> <span>${this.props.user.data.valueSpent.toFixed(2)}</span>
+            </div>
+            <div class="stats">
+                <h5 class="mb-0">Account Value</h5> <span>${this.props.user.data.totalWorth.toFixed(2)}</span>
+            </div>
+            <div class="stats">
+                <h5 class="mb-0">Return On Investemt</h5> <span>${this.props.user.data.returnValue.toFixed(2)}</span>
+            </div>
+            <div class="stats">
+                <h5 class="mb-0">Percent ROI</h5> <span>{parseFloat(this.props.user.data.returnPercentage).toFixed(2)}%</span>
+            </div>
+            <div class="stats"></div>
+        </div>
+        <div class="table-marg">
+        <Table hover variant="info" >
+          <thead>
           <tr>
-            <td class="blue">Coin</td>
-            <td class="blue">Worth</td>
-            <td class="blue">Owned</td>
-            <td class="blue">Spent</td>
-            <td class="blue">Value</td>
+            <th class="blue">Coin</th>
+            <th class="blue">Worth</th>
+            <th class="blue">Owned</th>
+            <th class="blue">Spent</th>
+            <th class="blue">Value</th>
           </tr>
-          
+          </thead>
+          <tbody>
             {
               this.props.user.stocks.map((curr, i) => (
                 this.calculate(curr) > curr.spent ? 
@@ -107,6 +118,7 @@ class Home extends React.Component {
             }
         </tbody>
       </Table>
+      </div>
         <form onSubmit={this.handleBuy}>
           <label htmlFor="new-todo">
             New Coin:
@@ -216,6 +228,7 @@ class Home extends React.Component {
 
   async updateTkrs() {
     this.props.user.stocks = await newTkrs(this.props.user.stocks);
+    this.props.user.updateData();
     this.setState({});
   }
 

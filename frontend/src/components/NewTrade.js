@@ -57,7 +57,7 @@ class NewTrade extends React.Component {
             <input
               type="number"
               onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-              value={this.state.date}
+              value={this.state.date.toFixed(2)}
               readOnly
             />
             <button type="submit">
