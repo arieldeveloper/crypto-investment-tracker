@@ -18,12 +18,13 @@ class App extends React.Component {
 
   constructor() {
     super();
-    this.state = { user: null, choice: null, loggedIn: false };
+    this.state = { username: null, user: null, choice: null, loggedIn: false };
     this.choose = this.choose.bind(this);
     this.remove = this.remove.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.addUser = this.addUser.bind(this);
+    this.addHoldHome = this.addHoldHome.bind(this);
   }
 
   choose(hold) {
@@ -36,9 +37,8 @@ class App extends React.Component {
     this.setState({ choice: null});
   }
 
-  login(username) {
+  login() {
     this.setState({ loggedIn: true});
-    this.addUser(username);
   }
 
   logout() {
@@ -46,11 +46,14 @@ class App extends React.Component {
     this.setState({ user: null});
   }
 
-  addUser(username) {
-    let u = new User(username);
-    this.setState({ user: u});
+  addUser(user) {
+    this.setState({ user: user});
+    console.log('found');
   }
 
+  addHoldHome(hold) {
+    this.state.user.addHold(hold);
+  }
 
   render() {
     return (
@@ -58,8 +61,8 @@ class App extends React.Component {
         <Routes>
           <Route path="/register" element={<Register/>} />
           <Route path="/" element={<Login login={this.login} choose={this.choose}/>} />
-          <Route path="/home" element={<Home choose={this.choose} login={this.login}/>} />
-          <Route path="/inspect" element={<CoinDetails hold={this.state.choice} remove={this.remove} />} />
+          <Route path="/home" element={<Home choose={this.choose} login={this.login} logout={this.logout} addUser={this.addUser} addHoldHome={this.addHoldHome} user={this.state.user}/>} />
+          <Route path="/inspect" element={<CoinDetails hold={this.state.choice} remove={this.remove} user={this.state.user}/>} />
           </Routes>
       </BrowserRouter>
     );

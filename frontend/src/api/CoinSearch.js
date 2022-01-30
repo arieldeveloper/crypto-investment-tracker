@@ -2,6 +2,7 @@ import Coin from "../entities/Coin.ts";
 import Hold from "../entities/Hold.ts";
 import axios from "axios";
 import Trade from "../entities/Trade.ts";
+import TickerSearch from "./TickerSearch";
 
 /**
  * This function takes in a string and returns a searched coin through the backend api call
@@ -14,21 +15,29 @@ export default async (coin) => {
   let requirements = {
       coin: coin
   }
+  let data = [];
+  console.log('yhyhuhuh')
+  let trades = await tradeSearch();
+  console.log('uhuh')
   
+  let price = await TickerSearch(requirements.coin, false);
+  console.log('nnuhuh')
+  return [trades, price]
+
+  async function tradeSearch() {
     return axios.post(coinUrl, requirements).then((response) => {
         try {
-            let data = response.data;
-            let trades = [];
+            data = response.data;
+            let tradelist = [];
             for (let i = 0; i < data.length; i++) {
-                trades.push(new Trade(data[i].amount_of_coins, data[i].price));
+                tradelist.push(new Trade(parseInt(data[i].price), data[i].amount_of_coins));
             }
-            let coino = new Coin(data[0].coin);
-            let holdo = new Hold(coino, trades);
-            holdo.select();
-            return holdo;
+            return tradelist;
         } catch {
            return [];
         }
     }
     )
+  }
+
 }

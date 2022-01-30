@@ -10,11 +10,10 @@ export default async (email, password) => {
   let url = '/api/users/login';
   let requirements = {
     email: email,
-    password, password,
+    password: password,
   }
 
   return axios.post(url, requirements).then((response) => {
-    console.log(response)
     try {
       return response.data;
     } catch {

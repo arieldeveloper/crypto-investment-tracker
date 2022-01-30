@@ -1,5 +1,6 @@
 import React from "react";
 import TradePost from '../api/TradePost.js';
+import holdPost from '../api/holdPost.js';
 import Trade from "../entities/Trade.ts";
 
 class NewTrade extends React.Component {
@@ -13,22 +14,23 @@ class NewTrade extends React.Component {
   }
 
   setValue(e) {
-    this.setState({ value: e.target.value });
+    this.setState({ value: parseFloat(e.target.value) });
+    this.setState({ date: parseFloat(e.target.value) * this.props.stock.coin.value });
   }
 
   setDate(e) {
-    this.setState({ date: e.target.value });
+    this.setState({ date: parseFloat(e.target.value) });
   }
 
   async finishTrade(e) {
     e.preventDefault();
-    console.log(this.props.stock.coin.name);
-    this.props.stock.addTrade(new Trade(this.state.value, this.state.date));
-    let res = await TradePost(this.props.stock.coin.name, this.state.value, this.state.date);
-    console.log(res);
+    this.props.stock.addTrade(new Trade(this.state.value, parseFloat(this.props.stock.coin.value)));
+    let res = await TradePost(this.props.stock.coin.name, this.state.value, parseFloat(this.props.stock.coin.value));
+    let res2 = await holdPost(this.props.stock.coin.name, this.props.stock.amount, this.props.stock.spent);
+    console.log(this.props.stock.amount, this.props.stock.spent)
     this.props.endTrade(this.props.stock);
-    this.setState({value: ''});
-    this.setState({date: ''});
+    this.setState({value: 0});
+    this.setState({date: 0});
   }
 
   render() {
@@ -39,7 +41,7 @@ class NewTrade extends React.Component {
             <div>
             <label>
               {" "}
-              Value:{" "}
+              Amount:{" "}
             </label>
             <input
               type="number"
@@ -50,13 +52,13 @@ class NewTrade extends React.Component {
             />
             <label>
             {" "}
-              Time:{" "}
+              Cost:{" "}
             </label>
             <input
-              type="string"
-              placeholder="Enter Time"
-              onChange={this.setDate}
-              required
+              type="number"
+              onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+              value={this.state.date.toFixed(2)}
+              readOnly
             />
             <button type="submit">
             Submit!

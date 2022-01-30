@@ -15,6 +15,9 @@ app.use('/api/users', usersRoute);
 const portfolioRoute = require("./api-routes/portfolio");
 app.use('/api/portfolio', portfolioRoute);
 
+const holdRoute = require("./api-routes/holds");
+app.use('/api/holds', holdRoute);
+
 // listen
 app.listen(port, () => {
     console.log(`express is running on ${port}`);
