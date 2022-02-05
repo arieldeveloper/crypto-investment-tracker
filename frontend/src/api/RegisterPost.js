@@ -17,7 +17,8 @@ export default async (name, email, password, password2) => {
 
   return axios.post(url, requirements).then((response) => {
     try {
-      return [create_name(response)];
+      console.log(response);
+      return [error_check(response)];
     } catch {
       console.log(`Trying to make a call to the api to create user for email ${email}`);
       return [];
@@ -33,5 +34,14 @@ export default async (name, email, password, password2) => {
     let em = data.data[0].email;
     let pas = data.data[0].password;
     return String(nam + " " + em + " " + pas);
+  }
+
+  function error_check(data) {
+    if (typeof data.data[0].message !== "undefined") {
+      return data.data[0].message;
+    }
+    else {
+      return create_name(data);
+    }
   }
 }

@@ -30,7 +30,7 @@ export default async (coin) => {
             data = response.data;
             let tradelist = [];
             for (let i = 0; i < data.length; i++) {
-                tradelist.push(new Trade(parseInt(data[i].price), data[i].amount_of_coins));
+                tradelist.push(new Trade(data[i].amount_of_coins, parseInt(data[i].price)));
             }
             return tradelist;
         } catch {

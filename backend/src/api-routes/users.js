@@ -94,12 +94,12 @@ router.post('/register', async(req, res) => {
     let {name, email, password, password2} = req.body;
 
     // print the values for testing
-    console.log({
-        name,
-        email,
-        password,
-        password2
-    });
+    // console.log({
+    //     name,
+    //     email,
+    //     password,
+    //     password2
+    // });
 
     let errors = [];
 
@@ -122,7 +122,6 @@ router.post('/register', async(req, res) => {
 
     if (errors.length > 0) {
         // Form not validated
-        console.log(errors)
         res.send(errors);
     } else {
         // Form validation passed
@@ -141,7 +140,7 @@ router.post('/register', async(req, res) => {
 
                 if (results.rows.length > 0) {
                     // user already exists
-                    errors.push({message: "user already registered"})
+                    errors.push({message: "User with this email already registered"});
                     res.send(errors);
                 } else {
                     // user does not exist yet
@@ -152,7 +151,6 @@ router.post('/register', async(req, res) => {
                             if (err) {
                                 throw err;
                             }
-                            console.log(results.rows);
                             res.send(results.rows);
                         }
                     );
