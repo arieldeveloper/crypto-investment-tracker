@@ -3,6 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import RegisterPost from '../api/RegisterPost.js';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../auth.css'
+import bitcoin from './bit.png'; 
 
 export default function Register(props) {
   const [email, setEmail] = useState("");
@@ -35,7 +36,7 @@ export default function Register(props) {
           <form class="card-body cardbody-color p-lg-5" onSubmit={handleSubmit}>
 
             <div class="text-center">
-              <img src="https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295397__340.png" class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
+              <img src={bitcoin} class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
                 width="200px" alt="profile"></img>
             </div>
             <div class="mb-3">
