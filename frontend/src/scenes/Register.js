@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import RegisterPost from '../api/RegisterPost.js';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../auth.css'
@@ -9,13 +9,21 @@ export default function Register(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const [loggedIn, setloggedIn] = useState(false);
 
   async function handleSubmit(e) {
       e.preventDefault();
       let res = await RegisterPost(username, email, password, password2);
+      if (res == "success") {
+        props.login();
+        setloggedIn(true);
+      }
       console.log(res);
   }
 
+  if (loggedIn) {
+    return <Navigate to="/home"/>
+  }
   return (
     <div className="Login">
       <div class="container">

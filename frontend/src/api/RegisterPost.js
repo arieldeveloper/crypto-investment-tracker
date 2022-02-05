@@ -1,4 +1,5 @@
 import axios from "axios";
+import LoginPost from "./LoginPost.js"
 
 /**
  * This function takes in a string and returns a searched coin through the backend api call
@@ -18,7 +19,7 @@ export default async (name, email, password, password2) => {
   return axios.post(url, requirements).then((response) => {
     try {
       console.log(response);
-      return [error_check(response)];
+      return error_check(response);
     } catch {
       console.log(`Trying to make a call to the api to create user for email ${email}`);
       return [];
@@ -29,19 +30,17 @@ export default async (name, email, password, password2) => {
    * 
    * This is how the string is dispayed.
    */
-  function create_name(data) {
-    let nam = data.data[0].name;
-    let em = data.data[0].email;
-    let pas = data.data[0].password;
-    return String(nam + " " + em + " " + pas);
+  async function call_Login() {
+    let res = await LoginPost(email, password);
+    return res;
   }
 
-  function error_check(data) {
+  async function error_check(data) {
     if (typeof data.data[0].message !== "undefined") {
       return data.data[0].message;
     }
     else {
-      return create_name(data);
+      return await call_Login();
     }
   }
 }
