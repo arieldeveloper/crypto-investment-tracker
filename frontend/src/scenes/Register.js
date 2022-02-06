@@ -1,20 +1,30 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import RegisterPost from '../api/RegisterPost.js';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../auth.css'
+import bitcoin from './bit.png'; 
 
 export default function Register(props) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const [loggedIn, setloggedIn] = useState(false);
 
   async function handleSubmit(e) {
       e.preventDefault();
       let res = await RegisterPost(username, email, password, password2);
+      if (res == "success") {
+        props.login();
+        setloggedIn(true);
+      }
+      console.log(res);
   }
 
+  if (loggedIn) {
+    return <Navigate to="/home"/>
+  }
   return (
     <div className="Login">
       <div class="container">
@@ -26,7 +36,7 @@ export default function Register(props) {
           <form class="card-body cardbody-color p-lg-5" onSubmit={handleSubmit}>
 
             <div class="text-center">
-              <img src="https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295397__340.png" class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
+              <img src={bitcoin} class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
                 width="200px" alt="profile"></img>
             </div>
             <div class="mb-3">

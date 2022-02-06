@@ -53,14 +53,14 @@ class CoinDetails extends React.Component {
   }
 
   calcRet(trad) {
-    let dif = this.props.hold.coin.value - trad.amount;
-    let total = dif * trad.value;
+    let dif = this.props.hold.coin.value - trad.value;
+    let total = dif * trad.amount;
     return total;
   }
 
   calcRetPer(trad) {
-    let dif = this.props.hold.coin.value - trad.amount;
-    let div = dif / trad.amount;
+    let dif = this.props.hold.coin.value - trad.value;
+    let div = 100 * dif / trad.value;
     return div;
   }
 
@@ -99,7 +99,7 @@ class CoinDetails extends React.Component {
                 <h5 class="mb-0">Return On Investemt</h5> <span>${this.props.hold.data.returnValue.toFixed(2)}</span>
             </div>
             <div class="stat">
-                <h5 class="mb-0">Percent ROI</h5> <span>{parseFloat(this.props.user.data.returnPercentage).toFixed(2)}%</span>
+                <h5 class="mb-0">Percent ROI</h5> <span>{parseFloat(this.props.hold.data.returnPercentage).toFixed(2)}%</span>
             </div>
         </div>
         <div class="table-marg">
@@ -116,22 +116,22 @@ class CoinDetails extends React.Component {
             <tbody>
               {
                 this.props.hold.trades.map((curr, i) => (
-                  this.props.hold.coin.value > curr.amount ?
+                  this.props.hold.coin.value > curr.value ?
                   <tr key={i}>
-              <td>{ curr.value.toFixed(2) }</td>
-              <td>{ this.calculate(curr).toFixed(2) }</td>
               <td>{ curr.amount.toFixed(2) }</td>
+              <td>{ this.calculate(curr).toFixed(2) }</td>
+              <td>{ curr.value.toFixed(2) }</td>
                
               <td class='green'>{ this.calcRet(curr).toFixed(2) }</td>
-              <td class='green'>{ this.calcRetPer(curr).toFixed(2) }</td>
+              <td class='green'>{ this.calcRetPer(curr).toFixed(2) }%</td>
               </tr> :
               <tr key={i}>
-              <td>{ curr.value.toFixed(2) }</td>
-              <td>{ this.calculate(curr).toFixed(2) }</td>
               <td>{ curr.amount.toFixed(2) }</td>
+              <td>{ this.calculate(curr).toFixed(2) }</td>
+              <td>{ curr.value.toFixed(2) }</td>
                
               <td class='red'>{ this.calcRet(curr).toFixed(2) }</td>
-              <td class='red'>{ this.calcRetPer(curr).toFixed(2) }</td>
+              <td class='red'>{ this.calcRetPer(curr).toFixed(2) }%</td>
               </tr>
                   
                   ))
